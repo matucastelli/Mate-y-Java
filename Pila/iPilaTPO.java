@@ -1,6 +1,6 @@
-package repos.Mate_y_Java.Pila;
+package Pila;
 
-public interface IPila<T> {
+public interface iPilaTPO<T> {
     // Apila un elemento en el tope de la pila
     void apilar(T dato);
 

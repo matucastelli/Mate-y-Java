@@ -1,4 +1,6 @@
-public interface DiccionarioAVLTDA {
+import Clases.Producto;
+
+public interface iDiccionarioAVL {
     
     // Inserta un producto en el árbol usando su código como clave.
     void insertar(String clave, Producto valor);

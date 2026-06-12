@@ -1,16 +1,16 @@
-package repos.Mate_y_Java.Cola;
+package Cola;
 
-public class Cola<T> implements ICola<T> {
+public class cola<T> implements iCola<T> {
 
     // Referencia al primer nodo (el que saldrá primero).
-    private NodoCola<T> frente;
+    private nodoCola<T> frente;
     // Referencia al último nodo (donde se encola el siguiente). 
-    private NodoCola<T> fin;
+    private nodoCola<T> fin;
     // Cantidad de elementos actualmente en la cola. 
     private int tamanio;
 
     // Constructor. Crea una cola vacía.
-    public Cola() {
+    public cola() {
         this.frente = null;
         this.fin = null;
         this.tamanio = 0;
@@ -23,7 +23,7 @@ public class Cola<T> implements ICola<T> {
             System.out.println("No se puede encolar un dato nulo.");
         }
 
-        NodoCola<T> nuevoNodo = new NodoCola<>(dato);
+        nodoCola<T> nuevoNodo = new nodoCola<>(dato);
 
         if (estaVacia()) {
             // Si la cola estaba vacía, frente y fin apuntan al mismo nodo
@@ -67,7 +67,7 @@ public class Cola<T> implements ICola<T> {
     public T frente() {
         if (estaVacia()) {
             System.out.println("No se puede consultar el frente: la cola está vacía.");
-            retunr null;
+            return null;
         }
         return frente.getDato();
     }
