@@ -15,7 +15,7 @@ public class pila<T> implements iPila<T> {
     }
 
     /**
-     * Apila un elemento en el tope. O(1).
+     * Apila un elemento en el tope.
      * El nuevo nodo pasa a ser el tope y apunta al nodo que era tope antes.
      */
     @Override
@@ -33,7 +33,7 @@ public class pila<T> implements iPila<T> {
     }
 
     /**
-     * Elimina y retorna el elemento del tope. O(1).
+     * Elimina y retorna el elemento del tope.
      * El tope pasa a ser el nodo que estaba debajo.
      */
     @Override
@@ -50,9 +50,7 @@ public class pila<T> implements iPila<T> {
         return datoDesapilado;
     }
 
-    /**
-     * Retorna el dato del tope sin eliminarlo. O(1).
-     */
+    // Retorna el dato del tope sin eliminarlo.
     @Override
     public T tope() {
         if (estaVacia()) {

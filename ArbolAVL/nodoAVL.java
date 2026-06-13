@@ -18,6 +18,8 @@ public class nodoAVL {
         this.derecho = null;
     }
 
+    // Getters y setters para los atributos del nodo.
+    
     public String getClave() { return clave; }
     public void setClave(String clave) { this.clave = clave; }
 
