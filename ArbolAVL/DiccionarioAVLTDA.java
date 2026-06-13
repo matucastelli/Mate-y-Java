@@ -1,5 +1,9 @@
+package ArbolAVL;
+
+import Clases.Producto;
+
 public interface DiccionarioAVLTDA {
-    
+
     // Inserta un producto en el árbol usando su código como clave.
     void insertar(String clave, Producto valor);
 
@@ -20,4 +24,8 @@ public interface DiccionarioAVLTDA {
 
     // Verifica si el árbol no tiene elementos.
     boolean estaVacio();
+
+    // Devuelve todos los productos del árbol ordenados por código (recorrido in-order).
+    // Se usa para construir la Cola de Prioridad del Monitor de Stock Critico.
+    Producto[] obtenerTodos();
 }

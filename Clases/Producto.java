@@ -39,7 +39,7 @@ public class Producto {
 
     public int getStock() { return stock; }
     //  Actualiza el stock asegurando que no se asignen valores negativos.
-    public void setStock(int stock) {   
+    public void setStock(int stock) {
         if (stock < 0) {
             System.out.println("Error: El stock no puede ser negativo. No se actualizará el valor.");
         } else {

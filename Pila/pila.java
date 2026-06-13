@@ -1,6 +1,4 @@
-package repos.Mate_y_Java.Pila;
-
-package pila;
+package Pila;
 
 public class Pila<T> implements IPila<T> {
 
@@ -24,6 +22,7 @@ public class Pila<T> implements IPila<T> {
     public void apilar(T dato) {
         if (dato == null) {
             System.out.println("No se puede apilar un dato nulo.");
+            return;
         }
         NodoPila<T> nuevoNodo = new NodoPila<>(dato);
         // El nuevo nodo apunta al tope actual
@@ -41,7 +40,7 @@ public class Pila<T> implements IPila<T> {
     public T desapilar() {
         if (estaVacia()) {
             System.out.println("No se puede desapilar: la pila está vacía.");
-            return null; 
+            return null;
         }
         // Guardamos el dato del tope para retornarlo
         T datoDesapilado = tope.getDato();
@@ -64,7 +63,6 @@ public class Pila<T> implements IPila<T> {
     }
 
     // Indica si la pila no tiene elementos. O(1).
-
     @Override
     public boolean estaVacia() {
         return tope == null;

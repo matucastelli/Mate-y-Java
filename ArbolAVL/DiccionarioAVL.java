@@ -1,6 +1,13 @@
+package ArbolAVL;
+
+import Clases.Producto;
+
 public class DiccionarioAVL implements DiccionarioAVLTDA {
     private NodoAVL raiz;
-    private int cantidadElementos; 
+    private int cantidadElementos;
+
+    // Indice auxiliar usado al recorrer el arbol para llenar arrays (obtenerTodos).
+    private int indiceTemp;
 
     //Inicializa el árbol vacío y el contador de elementos en cero.
     public DiccionarioAVL() {
@@ -127,7 +134,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
         nodo.setAltura(Math.max(obtenerAltura(nodo.getIzquierdo()), obtenerAltura(nodo.getDerecho())) + 1);
         int balance = obtenerFactorBalance(nodo);
 
-        // CASOS DE DESBALANCEO AL ELIMINAR 
+        // CASOS DE DESBALANCEO AL ELIMINAR
         if (balance > 1 && obtenerFactorBalance(nodo.getIzquierdo()) >= 0) return rotarDerecha(nodo);
         if (balance > 1 && obtenerFactorBalance(nodo.getIzquierdo()) < 0) {
             nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
@@ -151,7 +158,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
     }
 
     // Implementación de Búsqueda y Contención
-    
+
     @Override
     public Producto buscar(String clave) {
         NodoAVL resultado = buscarRecursivo(this.raiz, clave);
@@ -200,5 +207,24 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
     @Override
     public boolean estaVacio() {
         return this.raiz == null;
+    }
+
+    // Recorre el arbol in-order y devuelve todos los productos en un array.
+    // Al ser Producto[] (tipo concreto, no generico), no hay problema de cast.
+    @Override
+    public Producto[] obtenerTodos() {
+        Producto[] resultado = new Producto[cantidadElementos];
+        indiceTemp = 0;
+        llenarArrayInOrder(this.raiz, resultado);
+        return resultado;
+    }
+
+    private void llenarArrayInOrder(NodoAVL nodo, Producto[] array) {
+        if (nodo != null) {
+            llenarArrayInOrder(nodo.getIzquierdo(), array);
+            array[indiceTemp] = nodo.getValor();
+            indiceTemp++;
+            llenarArrayInOrder(nodo.getDerecho(), array);
+        }
     }
 }

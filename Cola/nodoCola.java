@@ -1,11 +1,11 @@
-package repos.Mate_y_Java.Cola;
+package Cola;
 
 public class NodoCola<T> {
 
     // Dato almacenado en este nodo.
     private T dato;
 
-    // Referencia al siguiente nodo en la cola (null si es el último). 
+    // Referencia al siguiente nodo en la cola (null si es el último).
     private NodoCola<T> siguiente;
 
     //Constructor del nodo.
@@ -30,4 +30,3 @@ public class NodoCola<T> {
         this.siguiente = siguiente;
     }
 }
-
