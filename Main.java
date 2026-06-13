@@ -1,7 +1,7 @@
 
 import java.util.Scanner;
 
-import ArbolAVL.DiccionarioAVL;
+import ArbolAVL.diccionarioAVL;
 import Clases.Producto;
 import Funcionalidades.MonitorStockCritico;
 import Funcionalidades.RegistroTrazabilidad;
@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
 
-        DiccionarioAVL inventario = new DiccionarioAVL();
+        diccionarioAVL inventario = new diccionarioAVL();
         MonitorStockCritico monitor = new MonitorStockCritico(inventario);
         RegistroTrazabilidad trazabilidad = new RegistroTrazabilidad(inventario);
 
@@ -83,7 +83,7 @@ public class Main {
         return valor;
     }
 
-    private static void altaProducto(Scanner teclado, DiccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
+    private static void altaProducto(Scanner teclado, diccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
         System.out.print("Codigo: ");
         String codigo = teclado.nextLine();
         System.out.print("Nombre: ");
@@ -104,7 +104,7 @@ public class Main {
         System.out.println("Producto agregado: " + nuevo);
     }
 
-    private static void registrarIngreso(Scanner teclado, DiccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
+    private static void registrarIngreso(Scanner teclado, diccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
         System.out.print("Codigo del producto: ");
         String codigo = teclado.nextLine();
         Producto producto = inventario.buscar(codigo);
@@ -120,7 +120,7 @@ public class Main {
         System.out.println("Nuevo stock de " + codigo + ": " + producto.getStock());
     }
 
-    private static void registrarEgreso(Scanner teclado, DiccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
+    private static void registrarEgreso(Scanner teclado, diccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
         System.out.print("Codigo del producto: ");
         String codigo = teclado.nextLine();
         Producto producto = inventario.buscar(codigo);
@@ -148,7 +148,7 @@ public class Main {
     }
 
     // Carga algunos productos de ejemplo para poder probar el sistema rapidamente.
-    private static void cargarDatosDePrueba(DiccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
+    private static void cargarDatosDePrueba(diccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
         Producto p1 = new Producto("P001", "Tornillos 5mm", "Pasillo A - Estante 1", 50, "L001");
         Producto p2 = new Producto("P002", "Cables UTP", "Pasillo B - Estante 3", 5, "L002");
         Producto p3 = new Producto("P003", "Cajas de carton", "Pasillo C - Estante 2", 200, "L003");

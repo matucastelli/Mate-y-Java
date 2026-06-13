@@ -2,32 +2,32 @@ package ArbolAVL;
 
 import Clases.Producto;
 
-public class DiccionarioAVL implements DiccionarioAVLTDA {
-    private NodoAVL raiz;
+public class diccionarioAVL implements iDiccionarioAVL {
+    private nodoAVL raiz;
     private int cantidadElementos;
 
     // Indice auxiliar usado al recorrer el arbol para llenar arrays (obtenerTodos).
     private int indiceTemp;
 
     //Inicializa el árbol vacío y el contador de elementos en cero.
-    public DiccionarioAVL() {
+    public diccionarioAVL() {
         this.raiz = null;
         this.cantidadElementos = 0;
     }
 
     // Métodos auxiliares para rotaciones y balanceo
 
-    private int obtenerAltura(NodoAVL nodo) {
+    private int obtenerAltura(nodoAVL nodo) {
         return (nodo == null) ? 0 : nodo.getAltura();
     }
 
-    private int obtenerFactorBalance(NodoAVL nodo) {
+    private int obtenerFactorBalance(nodoAVL nodo) {
         return (nodo == null) ? 0 : obtenerAltura(nodo.getIzquierdo()) - obtenerAltura(nodo.getDerecho());
     }
 
-    private NodoAVL rotarDerecha(NodoAVL y) {
-        NodoAVL x = y.getIzquierdo();
-        NodoAVL T2 = x.getDerecho();
+    private nodoAVL rotarDerecha(nodoAVL y) {
+        nodoAVL x = y.getIzquierdo();
+        nodoAVL T2 = x.getDerecho();
         x.setDerecho(y);
         y.setIzquierdo(T2);
         y.setAltura(Math.max(obtenerAltura(y.getIzquierdo()), obtenerAltura(y.getDerecho())) + 1);
@@ -35,9 +35,9 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
         return x;
     }
 
-    private NodoAVL rotarIzquierda(NodoAVL x) {
-        NodoAVL y = x.getDerecho();
-        NodoAVL T2 = y.getIzquierdo();
+    private nodoAVL rotarIzquierda(nodoAVL x) {
+        nodoAVL y = x.getDerecho();
+        nodoAVL T2 = y.getIzquierdo();
         y.setIzquierdo(x);
         x.setDerecho(T2);
         x.setAltura(Math.max(obtenerAltura(x.getIzquierdo()), obtenerAltura(x.getDerecho())) + 1);
@@ -57,8 +57,8 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
         }
     }
 
-    private NodoAVL insertarRecursivo(NodoAVL nodo, String clave, Producto valor) {
-        if (nodo == null) return new NodoAVL(clave, valor);
+    private nodoAVL insertarRecursivo(nodoAVL nodo, String clave, Producto valor) {
+        if (nodo == null) return new nodoAVL(clave, valor);
 
         int comparacion = clave.compareTo(nodo.getClave());
         if (comparacion < 0) nodo.setIzquierdo(insertarRecursivo(nodo.getIzquierdo(), clave, valor));
@@ -93,7 +93,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
         System.out.println("Producto [" + clave + "] eliminado exitosamente del inventario.");
     }
 
-    private NodoAVL eliminarRecursivo(NodoAVL nodo, String clave) {
+    private nodoAVL eliminarRecursivo(nodoAVL nodo, String clave) {
         if (nodo == null) return null;
 
         int comparacion = clave.compareTo(nodo.getClave());
@@ -107,7 +107,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
             // Resolvemos según la cantidad de hijos
             // Caso 1 o 2: Sin hijos o con un solo hijo
             if ((nodo.getIzquierdo() == null) || (nodo.getDerecho() == null)) {
-                NodoAVL temp = (nodo.getIzquierdo() != null) ? nodo.getIzquierdo() : nodo.getDerecho();
+                nodoAVL temp = (nodo.getIzquierdo() != null) ? nodo.getIzquierdo() : nodo.getDerecho();
 
                 if (temp == null) {
                     nodo = null; // Sin hijos
@@ -116,7 +116,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
                 }
             } else {
                 // Caso 3: Dos hijos. Buscamos el sucesor (el menor de la derecha)
-                NodoAVL temp = nodoConValorMinimo(nodo.getDerecho());
+                nodoAVL temp = nodoConValorMinimo(nodo.getDerecho());
 
                 // Copiamos los datos del sucesor al nodo actual
                 nodo.setClave(temp.getClave());
@@ -149,8 +149,8 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
         return nodo;
     }
 
-    private NodoAVL nodoConValorMinimo(NodoAVL nodo) {
-        NodoAVL actual = nodo;
+    private nodoAVL nodoConValorMinimo(nodoAVL nodo) {
+        nodoAVL actual = nodo;
         while (actual.getIzquierdo() != null) {
             actual = actual.getIzquierdo();
         }
@@ -161,7 +161,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
 
     @Override
     public Producto buscar(String clave) {
-        NodoAVL resultado = buscarRecursivo(this.raiz, clave);
+        nodoAVL resultado = buscarRecursivo(this.raiz, clave);
         if (resultado == null) {
             System.out.println("Aviso: El código [" + clave + "] no corresponde a ningún producto.");
             return null;
@@ -169,7 +169,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
         return resultado.getValor();
     }
 
-    private NodoAVL buscarRecursivo(NodoAVL nodo, String clave) {
+    private nodoAVL buscarRecursivo(nodoAVL nodo, String clave) {
         if (nodo == null || clave.compareTo(nodo.getClave()) == 0) return nodo;
         if (clave.compareTo(nodo.getClave()) < 0) return buscarRecursivo(nodo.getIzquierdo(), clave);
         return buscarRecursivo(nodo.getDerecho(), clave);
@@ -196,7 +196,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
         System.out.println("Total de productos distintos: " + tamanio());
     }
 
-    private void recorridoInOrder(NodoAVL nodo) {
+    private void recorridoInOrder(nodoAVL nodo) {
         if (nodo != null) {
             recorridoInOrder(nodo.getIzquierdo());
             System.out.println(nodo.getValor().toString());
@@ -219,7 +219,7 @@ public class DiccionarioAVL implements DiccionarioAVLTDA {
         return resultado;
     }
 
-    private void llenarArrayInOrder(NodoAVL nodo, Producto[] array) {
+    private void llenarArrayInOrder(nodoAVL nodo, Producto[] array) {
         if (nodo != null) {
             llenarArrayInOrder(nodo.getIzquierdo(), array);
             array[indiceTemp] = nodo.getValor();

@@ -1,6 +1,6 @@
 package Funcionalidades;
 
-import ArbolAVL.DiccionarioAVL;
+import ArbolAVL.diccionarioAVL;
 import Clases.Producto;
 import Cola_Prioritaria.Cola_Prioritaria;
 
@@ -9,9 +9,9 @@ import Cola_Prioritaria.Cola_Prioritaria;
 // para ordenar los productos segun su stock (menor stock = mas urgente).
 public class MonitorStockCritico {
 
-    private DiccionarioAVL inventario;
+    private diccionarioAVL inventario;
 
-    public MonitorStockCritico(DiccionarioAVL inventario) {
+    public MonitorStockCritico(diccionarioAVL inventario) {
         this.inventario = inventario;
     }
 

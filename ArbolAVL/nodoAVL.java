@@ -3,14 +3,14 @@ package ArbolAVL;
 import Clases.Producto;
 
 //Representa un nodo del Árbol AVL específico para el inventario.
-public class NodoAVL {
+public class nodoAVL {
     private String clave;
     private Producto valor;
     private int altura;
-    private NodoAVL izquierdo;
-    private NodoAVL derecho;
+    private nodoAVL izquierdo;
+    private nodoAVL derecho;
 
-    public NodoAVL(String clave, Producto valor) {
+    public nodoAVL(String clave, Producto valor) {
         this.clave = clave;
         this.valor = valor;
         this.altura = 1;
@@ -27,9 +27,9 @@ public class NodoAVL {
     public int getAltura() { return altura; }
     public void setAltura(int altura) { this.altura = altura; }
 
-    public NodoAVL getIzquierdo() { return izquierdo; }
-    public void setIzquierdo(NodoAVL izquierdo) { this.izquierdo = izquierdo; }
+    public nodoAVL getIzquierdo() { return izquierdo; }
+    public void setIzquierdo(nodoAVL izquierdo) { this.izquierdo = izquierdo; }
 
-    public NodoAVL getDerecho() { return derecho; }
-    public void setDerecho(NodoAVL derecho) { this.derecho = derecho; }
+    public nodoAVL getDerecho() { return derecho; }
+    public void setDerecho(nodoAVL derecho) { this.derecho = derecho; }
 }
