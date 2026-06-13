@@ -59,7 +59,7 @@ public class diccionarioAVL implements iDiccionarioAVL {
     private nodoAVL insertarRecursivo(nodoAVL nodo, String clave, Producto valor) {
         if (nodo == null) return new nodoAVL(clave, valor);
 
-        int comparacion = clave.compareTo(nodo.getClave());
+        int comparacion = clave.compareToIgnoreCase(nodo.getClave());
         if (comparacion < 0) nodo.setIzquierdo(insertarRecursivo(nodo.getIzquierdo(), clave, valor));
         else if (comparacion > 0) nodo.setDerecho(insertarRecursivo(nodo.getDerecho(), clave, valor));
         else return nodo;
@@ -67,13 +67,13 @@ public class diccionarioAVL implements iDiccionarioAVL {
         nodo.setAltura(1 + Math.max(obtenerAltura(nodo.getIzquierdo()), obtenerAltura(nodo.getDerecho())));
         int balance = obtenerFactorBalance(nodo);
 
-        if (balance > 1 && clave.compareTo(nodo.getIzquierdo().getClave()) < 0) return rotarDerecha(nodo);
-        if (balance < -1 && clave.compareTo(nodo.getDerecho().getClave()) > 0) return rotarIzquierda(nodo);
-        if (balance > 1 && clave.compareTo(nodo.getIzquierdo().getClave()) > 0) {
+        if (balance > 1 && clave.compareToIgnoreCase(nodo.getIzquierdo().getClave()) < 0) return rotarDerecha(nodo);
+        if (balance < -1 && clave.compareToIgnoreCase(nodo.getDerecho().getClave()) > 0) return rotarIzquierda(nodo);
+        if (balance > 1 && clave.compareToIgnoreCase(nodo.getIzquierdo().getClave()) > 0) {
             nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
             return rotarDerecha(nodo);
         }
-        if (balance < -1 && clave.compareTo(nodo.getDerecho().getClave()) < 0) {
+        if (balance < -1 && clave.compareToIgnoreCase(nodo.getDerecho().getClave()) < 0) {
             nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
             return rotarIzquierda(nodo);
         }
@@ -95,7 +95,7 @@ public class diccionarioAVL implements iDiccionarioAVL {
     private nodoAVL eliminarRecursivo(nodoAVL nodo, String clave) {
         if (nodo == null) return null;
 
-        int comparacion = clave.compareTo(nodo.getClave());
+        int comparacion = clave.compareToIgnoreCase(nodo.getClave());
 
         // 1. Buscar el nodo a eliminar
         if (comparacion < 0) {
@@ -169,8 +169,8 @@ public class diccionarioAVL implements iDiccionarioAVL {
     }
 
     private nodoAVL buscarRecursivo(nodoAVL nodo, String clave) {
-        if (nodo == null || clave.compareTo(nodo.getClave()) == 0) return nodo;
-        if (clave.compareTo(nodo.getClave()) < 0) return buscarRecursivo(nodo.getIzquierdo(), clave);
+        if (nodo == null || clave.compareToIgnoreCase(nodo.getClave()) == 0) return nodo;
+        if (clave.compareToIgnoreCase(nodo.getClave()) < 0) return buscarRecursivo(nodo.getIzquierdo(), clave);
         return buscarRecursivo(nodo.getDerecho(), clave);
     }
 
