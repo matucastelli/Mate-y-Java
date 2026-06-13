@@ -1,11 +1,10 @@
-package repos.Mate_y_Java;
 
 import java.util.Scanner;
 
-import repos.Mate_y_Java.ArbolAVL.DiccionarioAVL;
-import repos.Mate_y_Java.Clases.Producto;
-import repos.Mate_y_Java.Funcionalidades.MonitorStockCritico;
-import repos.Mate_y_Java.Funcionalidades.RegistroTrazabilidad;
+import ArbolAVL.DiccionarioAVL;
+import Clases.Producto;
+import Funcionalidades.MonitorStockCritico;
+import Funcionalidades.RegistroTrazabilidad;
 
 public class Main {
 

@@ -1,4 +1,4 @@
-package repos.Mate_y_Java.Clases;
+package Clases;
 
 public class Producto {
 

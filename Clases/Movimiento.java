@@ -1,4 +1,4 @@
-package repos.Mate_y_Java.Clases;
+package Clases;
 import java.time.LocalDateTime;
 
 public class Movimiento {

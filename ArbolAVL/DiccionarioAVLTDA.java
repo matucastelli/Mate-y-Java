@@ -1,6 +1,6 @@
-package repos.Mate_y_Java.ArbolAVL;
+package ArbolAVL;
 
-import repos.Mate_y_Java.Clases.Producto;
+import Clases.Producto;
 
 public interface DiccionarioAVLTDA {
 

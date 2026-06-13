@@ -1,4 +1,4 @@
-package repos.Mate_y_Java.Cola;
+package Cola;
 
 public class NodoCola<T> {
 

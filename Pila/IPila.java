@@ -1,4 +1,4 @@
-package repos.Mate_y_Java.Pila;
+package Pila;
 
 public interface IPila<T> {
     // Apila un elemento en el tope de la pila

@@ -1,4 +1,4 @@
-package repos.Mate_y_Java.Cola_Prioritaria;
+package Cola_Prioritaria;
 
 // Interfaz del TDA Cola de Prioridad.
 // Define las operaciones que debe tener cualquier implementacion.

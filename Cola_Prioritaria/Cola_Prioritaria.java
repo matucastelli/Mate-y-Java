@@ -1,4 +1,4 @@
-package repos.Mate_y_Java.Cola_Prioritaria;
+package Cola_Prioritaria;
 
 // Implementacion de la Cola de Prioridad usando una lista enlazada ordenada.
 // El elemento mas prioritario siempre queda al frente de la lista.

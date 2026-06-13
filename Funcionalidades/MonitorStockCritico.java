@@ -1,8 +1,8 @@
-package repos.Mate_y_Java.Funcionalidades;
+package Funcionalidades;
 
-import repos.Mate_y_Java.ArbolAVL.DiccionarioAVL;
-import repos.Mate_y_Java.Clases.Producto;
-import repos.Mate_y_Java.Cola_Prioritaria.Cola_Prioritaria;
+import ArbolAVL.DiccionarioAVL;
+import Clases.Producto;
+import Cola_Prioritaria.Cola_Prioritaria;
 
 // Funcionalidad: Control de Inventario Critico.
 // Usa el AVL para recorrer el inventario y una Cola de Prioridad

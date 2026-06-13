@@ -1,9 +1,9 @@
-package repos.Mate_y_Java.Funcionalidades;
+package Funcionalidades;
 
-import repos.Mate_y_Java.ArbolAVL.DiccionarioAVL;
-import repos.Mate_y_Java.Clases.Movimiento;
-import repos.Mate_y_Java.Clases.Producto;
-import repos.Mate_y_Java.Pila.Pila;
+import ArbolAVL.DiccionarioAVL;
+import Clases.Movimiento;
+import Clases.Producto;
+import Pila.Pila;
 
 // Funcionalidad: Trazabilidad de Lotes con Undo.
 // Usa una Pila para registrar los movimientos de stock y poder

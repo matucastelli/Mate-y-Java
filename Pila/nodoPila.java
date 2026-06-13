@@ -1,4 +1,4 @@
-package repos.Mate_y_Java.Pila;
+package Pila;
 
 public class NodoPila<T> {
 
