@@ -2,7 +2,7 @@ package Cola_Prioritaria;
 
 // Implementacion de la Cola de Prioridad usando una lista enlazada ordenada.
 // El elemento mas prioritario siempre queda al frente de la lista.
-public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
+public class cola_Prioritaria<T> implements iColaPrioridad<T> {
 
     // Nodo de la lista: guarda el dato, su prioridad y el siguiente nodo.
     private class NodoPrioridad {
@@ -22,14 +22,14 @@ public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
     private boolean menorEsPrioritario; // true = el numero mas chico es el mas urgente
 
     // Por defecto, menor numero = mayor prioridad (ej: menor stock = mas urgente).
-    public Cola_Prioritaria() {
+    public cola_Prioritaria() {
         this.frente = null;
         this.cantidad = 0;
         this.menorEsPrioritario = true;
     }
 
     // Permite invertir el criterio: mayor numero = mayor prioridad.
-    public Cola_Prioritaria(boolean menorEsPrioritario) {
+    public cola_Prioritaria(boolean menorEsPrioritario) {
         this.frente = null;
         this.cantidad = 0;
         this.menorEsPrioritario = menorEsPrioritario;
