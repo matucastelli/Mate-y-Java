@@ -2,7 +2,7 @@ package Cola_Prioritaria;
 
 // Implementacion de la Cola de Prioridad usando una lista enlazada ordenada.
 // El elemento mas prioritario siempre queda al frente de la lista.
-public class colaPrioritaria<T> implements iColaPrioridad<T> {
+public class colaPrioritaria<T> implements iColaPrioritaria<T> {
 
     // Nodo de la lista: guarda el dato, su prioridad y el siguiente nodo.
     private class NodoPrioridad {

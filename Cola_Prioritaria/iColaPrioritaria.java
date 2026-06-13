@@ -2,7 +2,7 @@ package Cola_Prioritaria;
 
 // Interfaz del TDA Cola de Prioridad.
 // Define las operaciones que debe tener cualquier implementacion.
-public interface IColaPrioridad<T> {
+public interface iColaPrioritaria<T> {
 
     // Inserta un dato segun su prioridad (a menor numero, mas urgente por defecto).
     void encolar(T dato, int prioridad);
@@ -30,3 +30,8 @@ public interface IColaPrioridad<T> {
     // Indica si la cola esta vacia.
     boolean estaVacia();
 }
+
+
+
+
+
