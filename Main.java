@@ -88,13 +88,13 @@ public class Main {
         String codigo = teclado.nextLine();
         System.out.print("Nombre: ");
         String nombre = teclado.nextLine();
-        System.out.print("Ubicacion: ");
-        String ubicacion = teclado.nextLine();
+        System.out.print("Pasillo: ");
+        String pasillo = teclado.nextLine();
         int stock = leerEntero(teclado, "Stock inicial: ");
         System.out.print("Lote: ");
         String lote = teclado.nextLine();
 
-        Producto nuevo = new Producto(codigo, nombre, ubicacion, stock, lote);
+        Producto nuevo = new Producto(codigo, nombre, pasillo, stock, lote);
         inventario.insertar(codigo, nuevo);
 
         if (stock > 0) {
