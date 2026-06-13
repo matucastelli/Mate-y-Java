@@ -1,16 +1,16 @@
 package Cola;
 
-public class Cola<T> implements ICola<T> {
+public class cola<T> implements iCola<T> {
 
     // Referencia al primer nodo (el que saldrá primero).
-    private NodoCola<T> frente;
-    // Referencia al último nodo (donde se encola el siguiente).
-    private NodoCola<T> fin;
-    // Cantidad de elementos actualmente en la cola.
+    private nodoCola<T> frente;
+    // Referencia al último nodo (donde se encola el siguiente). 
+    private nodoCola<T> fin;
+    // Cantidad de elementos actualmente en la cola. 
     private int tamanio;
 
     // Constructor. Crea una cola vacía.
-    public Cola() {
+    public cola() {
         this.frente = null;
         this.fin = null;
         this.tamanio = 0;
@@ -24,7 +24,7 @@ public class Cola<T> implements ICola<T> {
             return;
         }
 
-        NodoCola<T> nuevoNodo = new NodoCola<>(dato);
+        nodoCola<T> nuevoNodo = new nodoCola<>(dato);
 
         if (estaVacia()) {
             // Si la cola estaba vacía, frente y fin apuntan al mismo nodo

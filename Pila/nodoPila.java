@@ -1,15 +1,15 @@
 package Pila;
 
-public class NodoPila<T> {
+public class nodoPila<T> {
 
     //Dato almacenado en este nodo
     private T dato;
 
     // Referencia al nodo que está debajo en la pila (null si es el fondo).
-    private NodoPila<T> siguiente;
+    private nodoPila<T> siguiente;
 
     // Constructor para crear un nuevo nodo con el dato dado y sin siguiente.
-    public NodoPila(T dato) {
+    public nodoPila(T dato) {
         this.dato = dato;
         this.siguiente = null;
     }
@@ -22,11 +22,11 @@ public class NodoPila<T> {
         this.dato = dato;
     }
 
-    public NodoPila<T> getSiguiente() {
+    public nodoPila<T> getSiguiente() {
         return siguiente;
     }
 
-    public void setSiguiente(NodoPila<T> siguiente) {
+    public void setSiguiente(nodoPila<T> siguiente) {
         this.siguiente = siguiente;
     }
 }

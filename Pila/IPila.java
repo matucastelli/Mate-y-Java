@@ -1,6 +1,6 @@
 package Pila;
 
-public interface IPila<T> {
+public interface iPila<T> {
     // Apila un elemento en el tope de la pila
     void apilar(T dato);
 
