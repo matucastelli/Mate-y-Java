@@ -4,9 +4,9 @@ public class Cola<T> implements ICola<T> {
 
     // Referencia al primer nodo (el que saldrá primero).
     private NodoCola<T> frente;
-    // Referencia al último nodo (donde se encola el siguiente). 
+    // Referencia al último nodo (donde se encola el siguiente).
     private NodoCola<T> fin;
-    // Cantidad de elementos actualmente en la cola. 
+    // Cantidad de elementos actualmente en la cola.
     private int tamanio;
 
     // Constructor. Crea una cola vacía.
@@ -21,6 +21,7 @@ public class Cola<T> implements ICola<T> {
     public void encolar(T dato) {
         if (dato == null) {
             System.out.println("No se puede encolar un dato nulo.");
+            return;
         }
 
         NodoCola<T> nuevoNodo = new NodoCola<>(dato);
@@ -38,7 +39,7 @@ public class Cola<T> implements ICola<T> {
         tamanio++;
     }
 
-    /** 
+    /**
      * Elimina y retorna el elemento del frente. O(1).
      * El frente pasa a ser el nodo siguiente
      */
@@ -46,6 +47,7 @@ public class Cola<T> implements ICola<T> {
     public T desencolar() {
         if (estaVacia()) {
             System.out.println("No se puede desencolar: la cola está vacía.");
+            return null;
         }
 
         // Guardamos el dato del frente para retornarlo
@@ -67,7 +69,7 @@ public class Cola<T> implements ICola<T> {
     public T frente() {
         if (estaVacia()) {
             System.out.println("No se puede consultar el frente: la cola está vacía.");
-            retunr null;
+            return null;
         }
         return frente.getDato();
     }
@@ -92,4 +94,3 @@ public class Cola<T> implements ICola<T> {
         tamanio = 0;
     }
 }
-

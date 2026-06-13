@@ -1,5 +1,8 @@
-//Representa un nodo del Árbol AVL específico para el inventario.
+package repos.Mate_y_Java.ArbolAVL;
 
+import repos.Mate_y_Java.Clases.Producto;
+
+//Representa un nodo del Árbol AVL específico para el inventario.
 public class NodoAVL {
     private String clave;
     private Producto valor;

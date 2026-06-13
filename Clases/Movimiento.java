@@ -28,7 +28,7 @@ public class Movimiento {
     public int getCantidad() { return cantidad; }
     public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
-    public String getTimestamp() { return timestamp; }
+    public String getTimestamp() { return timestamp.toString(); }
 
     public String getUsuario() { return usuario; }
     public void setUsuario(String usuario) { this.usuario = usuario; }

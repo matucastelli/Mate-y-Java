@@ -1,3 +1,5 @@
+package repos.Mate_y_Java.Cola_Prioritaria;
+
 // Implementacion de la Cola de Prioridad usando una lista enlazada ordenada.
 // El elemento mas prioritario siempre queda al frente de la lista.
 public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
@@ -116,15 +118,15 @@ public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
     }
 
     // Recorre los primeros n nodos y los devuelve en un array, sin sacarlos.
+    // Se devuelve Object[] para evitar el ClassCastException de los arrays genericos.
     @Override
-    @SuppressWarnings("unchecked")
-    public T[] obtenerCriticos(int n) {
+    public Object[] obtenerCriticos(int n) {
         int cantidadAResolver = n;
         if (cantidadAResolver > cantidad) {
             cantidadAResolver = cantidad;
         }
 
-        T[] resultado = (T[]) new Object[cantidadAResolver];
+        Object[] resultado = new Object[cantidadAResolver];
         NodoPrioridad actual = frente;
 
         for (int i = 0; i < cantidadAResolver; i++) {

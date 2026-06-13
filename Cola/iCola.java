@@ -6,7 +6,6 @@ public interface ICola<T> {
     void encolar(T dato);
 
     // Elimina y retorna el elemento del frente de la cola.
-
     T desencolar();
 
     // Retorna el elemento del frente sin eliminarlo.
