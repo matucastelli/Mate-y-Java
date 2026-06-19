@@ -8,7 +8,7 @@ import Pila.pila;
 // Funcionalidad: Trazabilidad de Lotes con Undo.
 // Usa una Pila para registrar los movimientos de stock y poder
 // deshacer el ultimo movimiento aplicado al inventario (AVL).
-public class RegistroTrazabilidad {
+public class registroTrazabilidad {
 
     public static final String INGRESO = "INGRESO";
     public static final String EGRESO = "EGRESO";
@@ -16,7 +16,7 @@ public class RegistroTrazabilidad {
     private diccionarioAVL inventario;
     private pila<Movimiento> historial;
 
-    public RegistroTrazabilidad(diccionarioAVL inventario) {
+    public registroTrazabilidad(diccionarioAVL inventario) {
         this.inventario = inventario;
         this.historial = new pila<>();
     }
