@@ -7,11 +7,11 @@ import Cola_Prioritaria.colaPrioritaria;
 // Funcionalidad: Control de Inventario Critico.
 // Usa el AVL para recorrer el inventario y una Cola de Prioridad
 // para ordenar los productos segun su stock (menor stock = mas urgente).
-public class MonitorStockCritico {
+public class monitorStockCritico {
 
     private diccionarioAVL inventario;
 
-    public MonitorStockCritico(diccionarioAVL inventario) {
+    public monitorStockCritico(diccionarioAVL inventario) {
         this.inventario = inventario;
     }
 
@@ -55,5 +55,26 @@ public class MonitorStockCritico {
             Producto producto = (Producto) criticos[i];
             System.out.println((i + 1) + ". " + producto);
         }
+    }
+
+    // Indica si el producto con el codigo dado se encuentra entre los n productos
+    // con menor stock del inventario (mismo criterio que mostrarProductosCriticos).
+    public boolean esProductoCritico(String codigo, int n) {
+        colaPrioritaria<Producto> colaCriticos = construirColaPorStock();
+
+        if (colaCriticos.estaVacia()) {
+            return false;
+        }
+
+        Object[] criticos = colaCriticos.obtenerCriticos(n);
+
+        for (int i = 0; i < criticos.length; i++) {
+            Producto producto = (Producto) criticos[i];
+            if (producto.getCodigo().equalsIgnoreCase(codigo)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
