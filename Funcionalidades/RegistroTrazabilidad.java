@@ -1,24 +1,24 @@
 package Funcionalidades;
 
-import ArbolAVL.DiccionarioAVL;
+import ArbolAVL.diccionarioAVL;
 import Clases.Movimiento;
 import Clases.Producto;
-import Pila.Pila;
+import Pila.pila;
 
 // Funcionalidad: Trazabilidad de Lotes con Undo.
 // Usa una Pila para registrar los movimientos de stock y poder
 // deshacer el ultimo movimiento aplicado al inventario (AVL).
-public class RegistroTrazabilidad {
+public class registroTrazabilidad {
 
     public static final String INGRESO = "INGRESO";
     public static final String EGRESO = "EGRESO";
 
-    private DiccionarioAVL inventario;
-    private Pila<Movimiento> historial;
+    private diccionarioAVL inventario;
+    private pila<Movimiento> historial;
 
-    public RegistroTrazabilidad(DiccionarioAVL inventario) {
+    public registroTrazabilidad(diccionarioAVL inventario) {
         this.inventario = inventario;
-        this.historial = new Pila<>();
+        this.historial = new pila<>();
     }
 
     // Registra un movimiento de stock y lo apila en el historial.
@@ -61,7 +61,7 @@ public class RegistroTrazabilidad {
             return;
         }
 
-        Pila<Movimiento> auxiliar = new Pila<>();
+        pila<Movimiento> auxiliar = new pila<>();
 
         System.out.println("=== HISTORIAL DE MOVIMIENTOS (mas reciente primero) ===");
         while (!historial.estaVacia()) {

@@ -1,39 +1,43 @@
-
 import java.util.Scanner;
 
-import ArbolAVL.DiccionarioAVL;
+import ArbolAVL.diccionarioAVL;
 import Clases.Producto;
-import Funcionalidades.MonitorStockCritico;
-import Funcionalidades.RegistroTrazabilidad;
+import Funcionalidades.gestorInventario;
+import Funcionalidades.monitorStockCritico;
+import Funcionalidades.registroTrazabilidad;
 
 public class Main {
+
+    private static int CANTIDAD_CRITICOS = 5;
 
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
 
-        DiccionarioAVL inventario = new DiccionarioAVL();
-        MonitorStockCritico monitor = new MonitorStockCritico(inventario);
-        RegistroTrazabilidad trazabilidad = new RegistroTrazabilidad(inventario);
+        diccionarioAVL arbolBase = new diccionarioAVL();
+        gestorInventario gestor = new gestorInventario(arbolBase);
+        registroTrazabilidad trazabilidad = new registroTrazabilidad(arbolBase);
+        monitorStockCritico monitor = new monitorStockCritico(arbolBase);
 
-        cargarDatosDePrueba(inventario, trazabilidad);
+        cargarDatosDePrueba(gestor, trazabilidad);
 
         int opcion;
         do {
             mostrarMenu();
             opcion = leerEntero(teclado, "Elija una opcion: ");
 
+            // Controlador de flujo centralizado
             switch (opcion) {
                 case 1:
-                    altaProducto(teclado, inventario, trazabilidad);
+                    altaProducto(teclado, gestor, trazabilidad);
                     break;
                 case 2:
-                    registrarIngreso(teclado, inventario, trazabilidad);
+                    registrarIngreso(teclado, gestor, trazabilidad, monitor);
                     break;
                 case 3:
-                    registrarEgreso(teclado, inventario, trazabilidad);
+                    registrarEgreso(teclado, gestor, trazabilidad, monitor);
                     break;
                 case 4:
-                    inventario.mostrarInventarioOrdenado();
+                    gestor.mostrarInventario();
                     break;
                 case 5:
                     mostrarCriticos(teclado, monitor);
@@ -44,13 +48,21 @@ public class Main {
                 case 7:
                     trazabilidad.deshacerUltimoMovimiento();
                     break;
+                case 8:
+                    buscarProducto(teclado, gestor);
+                    break;
+                case 9:
+                    eliminarProducto(teclado, gestor);
+                    break;
+                case 10:
+                    System.out.println("Cantidad de productos distintos: " + gestor.cantidadProductos());
+                    break;
                 case 0:
                     System.out.println("Saliendo del sistema...");
                     break;
                 default:
                     System.out.println("Opcion invalida.");
             }
-
             System.out.println();
 
         } while (opcion != 0);
@@ -67,10 +79,12 @@ public class Main {
         System.out.println("5. Mostrar productos criticos");
         System.out.println("6. Mostrar historial de movimientos");
         System.out.println("7. Deshacer ultimo movimiento");
+        System.out.println("8. Buscar producto por codigo");
+        System.out.println("9. Eliminar producto");
+        System.out.println("10. Ver cantidad de productos distintos");
         System.out.println("0. Salir");
     }
 
-    // Lee un entero validando que el usuario no ingrese texto.
     private static int leerEntero(Scanner teclado, String mensaje) {
         System.out.print(mensaje);
         while (!teclado.hasNextInt()) {
@@ -79,89 +93,128 @@ public class Main {
             System.out.print(mensaje);
         }
         int valor = teclado.nextInt();
-        teclado.nextLine();
+        teclado.nextLine(); 
         return valor;
     }
 
-    private static void altaProducto(Scanner teclado, DiccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
+    // Agrega un nuevo producto al inventario, validando la unicidad del código 
+
+    private static void altaProducto(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad) {
         System.out.print("Codigo: ");
         String codigo = teclado.nextLine();
         System.out.print("Nombre: ");
         String nombre = teclado.nextLine();
-        System.out.print("Ubicacion: ");
-        String ubicacion = teclado.nextLine();
+        System.out.print("Pasillo: ");
+        String pasillo = teclado.nextLine();
         int stock = leerEntero(teclado, "Stock inicial: ");
         System.out.print("Lote: ");
         String lote = teclado.nextLine();
 
-        Producto nuevo = new Producto(codigo, nombre, ubicacion, stock, lote);
-        inventario.insertar(codigo, nuevo);
+        // Llamo al gestor inventario para validar y agregar el producto
+        Producto nuevo = gestor.agregarProducto(codigo, nombre, pasillo, stock, lote);
 
+        if (nuevo == null) {
+            return; // Falla si el código ya existía
+        }
+
+        // Si el producto se añade con stock, se guarda como un ingreso inicial
         if (stock > 0) {
-            trazabilidad.registrarMovimiento(RegistroTrazabilidad.INGRESO, codigo, stock, "sistema");
+            trazabilidad.registrarMovimiento(registroTrazabilidad.INGRESO, codigo, stock, "sistema");
         }
 
         System.out.println("Producto agregado: " + nuevo);
     }
 
-    private static void registrarIngreso(Scanner teclado, DiccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
+    private static void registrarIngreso(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad, monitorStockCritico monitor) {
         System.out.print("Codigo del producto: ");
         String codigo = teclado.nextLine();
-        Producto producto = inventario.buscar(codigo);
-
-        if (producto == null) {
-            return;
-        }
 
         int cantidad = leerEntero(teclado, "Cantidad a ingresar: ");
-        producto.setStock(producto.getStock() + cantidad);
-        trazabilidad.registrarMovimiento(RegistroTrazabilidad.INGRESO, codigo, cantidad, "operador");
+        // Llama al gestor para validar el ingreso
+        boolean exito = gestor.actualizarStock(codigo, cantidad);
 
-        System.out.println("Nuevo stock de " + codigo + ": " + producto.getStock());
+        if (exito) {
+            // Si el gestor aprueba el ingreso, se registra en la Pila LIFO
+            trazabilidad.registrarMovimiento(registroTrazabilidad.INGRESO, codigo, cantidad, "operador");
+            Producto producto = gestor.buscarProducto(codigo);
+            System.out.println("Nuevo stock de " + codigo + ": " + producto.getStock());
+
+            // Verifica si el ingreso fue suficiente para salir de estado critico
+            if (monitor.esProductoCritico(codigo, CANTIDAD_CRITICOS)) {
+                System.out.println(">>> ALERTA: El producto [" + codigo + "] sigue en nivel de Stock Critico. <<<");
+            }
+        }
     }
 
-    private static void registrarEgreso(Scanner teclado, DiccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
+    private static void registrarEgreso(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad, monitorStockCritico monitor) {
         System.out.print("Codigo del producto: ");
         String codigo = teclado.nextLine();
-        Producto producto = inventario.buscar(codigo);
-
-        if (producto == null) {
-            return;
-        }
 
         int cantidad = leerEntero(teclado, "Cantidad a retirar: ");
+        // Envía el valor negativo para que el gestor procese la sustracción
+        boolean exito = gestor.actualizarStock(codigo, -cantidad);
 
-        if (cantidad > producto.getStock()) {
-            System.out.println("Error: no se puede retirar mas stock del disponible (" + producto.getStock() + ").");
-            return;
+        if (exito) {
+            // Hace la operación en el tope de la Pila LIFO
+            trazabilidad.registrarMovimiento(registroTrazabilidad.EGRESO, codigo, cantidad, "operador");
+            Producto producto = gestor.buscarProducto(codigo);
+            System.out.println("Nuevo stock de " + codigo + ": " + producto.getStock());
+
+            // Alerta inmediata si el retiro de unidades hizo caer al producto en estado crítico
+            if (monitor.esProductoCritico(codigo, CANTIDAD_CRITICOS)) {
+                System.out.println(">>> ALERTA: El producto [" + codigo + "] entro en nivel de Stock Critico. <<<");
+            }
         }
-
-        producto.setStock(producto.getStock() - cantidad);
-        trazabilidad.registrarMovimiento(RegistroTrazabilidad.EGRESO, codigo, cantidad, "operador");
-
-        System.out.println("Nuevo stock de " + codigo + ": " + producto.getStock());
     }
 
-    private static void mostrarCriticos(Scanner teclado, MonitorStockCritico monitor) {
+    private static void mostrarCriticos(Scanner teclado, monitorStockCritico monitor) {
         int n = leerEntero(teclado, "Cuantos productos criticos mostrar?: ");
         monitor.mostrarProductosCriticos(n);
     }
 
-    // Carga algunos productos de ejemplo para poder probar el sistema rapidamente.
-    private static void cargarDatosDePrueba(DiccionarioAVL inventario, RegistroTrazabilidad trazabilidad) {
-        Producto p1 = new Producto("P001", "Tornillos 5mm", "Pasillo A - Estante 1", 50, "L001");
-        Producto p2 = new Producto("P002", "Cables UTP", "Pasillo B - Estante 3", 5, "L002");
-        Producto p3 = new Producto("P003", "Cajas de carton", "Pasillo C - Estante 2", 200, "L003");
-        Producto p4 = new Producto("P004", "Guantes de seguridad", "Pasillo A - Estante 4", 2, "L004");
+    private static void buscarProducto(Scanner teclado, gestorInventario gestor) {
+        System.out.print("Codigo del producto: ");
+        String codigo = teclado.nextLine();
 
-        inventario.insertar(p1.getCodigo(), p1);
-        inventario.insertar(p2.getCodigo(), p2);
-        inventario.insertar(p3.getCodigo(), p3);
-        inventario.insertar(p4.getCodigo(), p4);
+        Producto producto = gestor.buscarProducto(codigo);
 
-        trazabilidad.registrarMovimiento(RegistroTrazabilidad.INGRESO, "P001", 50, "carga_inicial");
-        trazabilidad.registrarMovimiento(RegistroTrazabilidad.INGRESO, "P002", 5, "carga_inicial");
-        trazabilidad.registrarMovimiento(RegistroTrazabilidad.INGRESO, "P003", 200, "carga_inicial");
-        trazabilidad.registrarMovimiento(RegistroTrazabilidad.INGRESO, "P004", 2, "carga_inicial");
+        if (producto != null) {
+            System.out.println(producto);
+        } else {
+            System.out.println("Aviso: El código [" + codigo + "] no corresponde a ningún producto.");
+        }
+    }
+
+    private static void eliminarProducto(Scanner teclado, gestorInventario gestor) {
+        System.out.print("Codigo del producto a eliminar: ");
+        String codigo = teclado.nextLine();
+
+        // Hace la verificación de existencia previa
+        if (!gestor.existeProducto(codigo)) {
+            System.out.println("Error: no existe ningun producto con el codigo [" + codigo + "].");
+            return;
+        }
+
+        System.out.print("Confirma la eliminacion de [" + codigo + "]? (S/N): ");
+        String confirmacion = teclado.nextLine();
+
+        if (confirmacion.equalsIgnoreCase("S")) {
+            gestor.eliminarProducto(codigo);
+        } else {
+            System.out.println("Operacion cancelada.");
+        }
+    }
+
+    // Carga inicial de datos para pruebas, con trazabilidad de cada movimiento registrado
+    private static void cargarDatosDePrueba(gestorInventario gestor, registroTrazabilidad trazabilidad) {
+        gestor.agregarProducto("P001", "Tornillos 5mm", "Pasillo A - Estante 1", 50, "L001");
+        gestor.agregarProducto("P002", "Cables UTP", "Pasillo B - Estante 3", 5, "L002");
+        gestor.agregarProducto("P003", "Cajas de carton", "Pasillo C - Estante 2", 200, "L003");
+        gestor.agregarProducto("P004", "Guantes de seguridad", "Pasillo A - Estante 4", 2, "L004");
+
+        trazabilidad.registrarMovimiento(registroTrazabilidad.INGRESO, "P001", 50, "carga_inicial");
+        trazabilidad.registrarMovimiento(registroTrazabilidad.INGRESO, "P002", 5, "carga_inicial");
+        trazabilidad.registrarMovimiento(registroTrazabilidad.INGRESO, "P003", 200, "carga_inicial");
+        trazabilidad.registrarMovimiento(registroTrazabilidad.INGRESO, "P004", 2, "carga_inicial");
     }
 }

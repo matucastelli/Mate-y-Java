@@ -1,24 +1,24 @@
 package Funcionalidades;
 
-import ArbolAVL.DiccionarioAVL;
+import ArbolAVL.diccionarioAVL;
 import Clases.Producto;
-import Cola_Prioritaria.Cola_Prioritaria;
+import Cola_Prioritaria.colaPrioritaria;
 
 // Funcionalidad: Control de Inventario Critico.
 // Usa el AVL para recorrer el inventario y una Cola de Prioridad
 // para ordenar los productos segun su stock (menor stock = mas urgente).
-public class MonitorStockCritico {
+public class monitorStockCritico {
 
-    private DiccionarioAVL inventario;
+    private diccionarioAVL inventario;
 
-    public MonitorStockCritico(DiccionarioAVL inventario) {
+    public monitorStockCritico(diccionarioAVL inventario) {
         this.inventario = inventario;
     }
 
     // Recorre el inventario actual y arma una cola de prioridad nueva
     // usando el stock de cada producto como prioridad.
-    private Cola_Prioritaria<Producto> construirColaPorStock() {
-        Cola_Prioritaria<Producto> colaCriticos = new Cola_Prioritaria<>();
+    private colaPrioritaria<Producto> construirColaPorStock() {
+        colaPrioritaria<Producto> colaCriticos = new colaPrioritaria<>();
         Producto[] productos = inventario.obtenerTodos();
 
         for (int i = 0; i < productos.length; i++) {
@@ -30,7 +30,7 @@ public class MonitorStockCritico {
 
     // Devuelve el producto con menor stock actual, o null si no hay productos.
     public Producto obtenerProductoMasCritico() {
-        Cola_Prioritaria<Producto> colaCriticos = construirColaPorStock();
+        colaPrioritaria<Producto> colaCriticos = construirColaPorStock();
 
         if (colaCriticos.estaVacia()) {
             return null;
@@ -41,7 +41,7 @@ public class MonitorStockCritico {
 
     // Muestra por consola los n productos con menor stock (los mas criticos primero).
     public void mostrarProductosCriticos(int n) {
-        Cola_Prioritaria<Producto> colaCriticos = construirColaPorStock();
+        colaPrioritaria<Producto> colaCriticos = construirColaPorStock();
 
         if (colaCriticos.estaVacia()) {
             System.out.println("No hay productos cargados en el inventario.");
@@ -55,5 +55,26 @@ public class MonitorStockCritico {
             Producto producto = (Producto) criticos[i];
             System.out.println((i + 1) + ". " + producto);
         }
+    }
+
+    // Indica si el producto con el codigo dado se encuentra entre los n productos
+    // con menor stock del inventario (mismo criterio que mostrarProductosCriticos).
+    public boolean esProductoCritico(String codigo, int n) {
+        colaPrioritaria<Producto> colaCriticos = construirColaPorStock();
+
+        if (colaCriticos.estaVacia()) {
+            return false;
+        }
+
+        Object[] criticos = colaCriticos.obtenerCriticos(n);
+
+        for (int i = 0; i < criticos.length; i++) {
+            Producto producto = (Producto) criticos[i];
+            if (producto.getCodigo().equalsIgnoreCase(codigo)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

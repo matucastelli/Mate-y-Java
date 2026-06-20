@@ -2,7 +2,7 @@ package Cola_Prioritaria;
 
 // Implementacion de la Cola de Prioridad usando una lista enlazada ordenada.
 // El elemento mas prioritario siempre queda al frente de la lista.
-public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
+public class colaPrioritaria<T> implements iColaPrioritaria<T> {
 
     // Nodo de la lista: guarda el dato, su prioridad y el siguiente nodo.
     private class NodoPrioridad {
@@ -22,14 +22,14 @@ public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
     private boolean menorEsPrioritario; // true = el numero mas chico es el mas urgente
 
     // Por defecto, menor numero = mayor prioridad (ej: menor stock = mas urgente).
-    public Cola_Prioritaria() {
+    public colaPrioritaria() {
         this.frente = null;
         this.cantidad = 0;
         this.menorEsPrioritario = true;
     }
 
     // Permite invertir el criterio: mayor numero = mayor prioridad.
-    public Cola_Prioritaria(boolean menorEsPrioritario) {
+    public colaPrioritaria(boolean menorEsPrioritario) {
         this.frente = null;
         this.cantidad = 0;
         this.menorEsPrioritario = menorEsPrioritario;
@@ -91,7 +91,7 @@ public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
     @Override
     public T verPrimero() {
         if (estaVacia()) {
-            throw new RuntimeException("La cola de prioridad esta vacia");
+            System.out.println("La cola de prioridad esta vacia");
         }
         return frente.dato;
     }
@@ -99,7 +99,7 @@ public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
     @Override
     public int verPrimeraPrioridad() {
         if (estaVacia()) {
-            throw new RuntimeException("La cola de prioridad esta vacia");
+            System.out.println("La cola de prioridad esta vacia");
         }
         return frente.prioridad;
     }
@@ -108,7 +108,7 @@ public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
     @Override
     public T desencolar() {
         if (estaVacia()) {
-            throw new RuntimeException("La cola de prioridad esta vacia");
+            System.out.println("La cola de prioridad esta vacia");
         }
 
         T dato = frente.dato;
@@ -141,7 +141,8 @@ public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
     @Override
     public void actualizarPrioridad(T dato, int nuevaPrioridad) {
         if (frente == null) {
-            throw new RuntimeException("El elemento no se encuentra en la cola");
+            System.out.println("El elemento no se encuentra en la cola");
+            return;
         }
 
         // Caso 1: el dato esta en el primer nodo
@@ -159,7 +160,8 @@ public class Cola_Prioritaria<T> implements IColaPrioridad<T> {
         }
 
         if (actual.siguiente == null) {
-            throw new RuntimeException("El elemento no se encuentra en la cola");
+            System.out.println("El elemento no se encuentra en la cola");
+            return;
         }
 
         actual.siguiente = actual.siguiente.siguiente;

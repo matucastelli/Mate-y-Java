@@ -1,21 +1,21 @@
 package Pila;
 
-public class Pila<T> implements IPila<T> {
+public class pila<T> implements iPila<T> {
 
     //* Referencia al nodo en el tope de la pila. null si la pila está vacía.
-    private NodoPila<T> tope;
+    private nodoPila<T> tope;
 
     //* Cantidad de elementos actualmente apilados.
     private int tamanio;
 
     // Constructor. Crea una pila vacía.
-    public Pila() {
+    public pila() {
         this.tope = null;
         this.tamanio = 0;
     }
 
     /**
-     * Apila un elemento en el tope. O(1).
+     * Apila un elemento en el tope.
      * El nuevo nodo pasa a ser el tope y apunta al nodo que era tope antes.
      */
     @Override
@@ -24,7 +24,7 @@ public class Pila<T> implements IPila<T> {
             System.out.println("No se puede apilar un dato nulo.");
             return;
         }
-        NodoPila<T> nuevoNodo = new NodoPila<>(dato);
+        nodoPila<T> nuevoNodo = new nodoPila<>(dato);
         // El nuevo nodo apunta al tope actual
         nuevoNodo.setSiguiente(tope);
         // El nuevo nodo pasa a ser el tope
@@ -33,7 +33,7 @@ public class Pila<T> implements IPila<T> {
     }
 
     /**
-     * Elimina y retorna el elemento del tope. O(1).
+     * Elimina y retorna el elemento del tope.
      * El tope pasa a ser el nodo que estaba debajo.
      */
     @Override
@@ -50,9 +50,7 @@ public class Pila<T> implements IPila<T> {
         return datoDesapilado;
     }
 
-    /**
-     * Retorna el dato del tope sin eliminarlo. O(1).
-     */
+    // Retorna el dato del tope sin eliminarlo.
     @Override
     public T tope() {
         if (estaVacia()) {

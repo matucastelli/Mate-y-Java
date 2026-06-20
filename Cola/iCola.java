@@ -1,6 +1,6 @@
 package Cola;
 
-public interface ICola<T> {
+public interface iCola<T> {
 
     //Agrega un elemento al final de la cola.
     void encolar(T dato);
