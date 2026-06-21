@@ -2,35 +2,12 @@ package Funcionalidades;
 
 import Clases.Producto;
 import Cola.cola;
+import Clases.Pedido;
 
 // Funcionalidad: Linea de Expedicion.
 // Los pedidos listos para despacho esperan en una cola FIFO.
 // El operario los carga al camion en el orden en que llegaron.
 public class lineaExpedicion {
-
-    // Cada pedido tiene un id, el producto a despachar y la cantidad.
-    public static class Pedido {
-        private static int contadorId = 1;
-        private int id;
-        private Producto producto;
-        private int cantidad;
-
-        public Pedido(Producto producto, int cantidad) {
-            this.id = contadorId++;
-            this.producto = producto;
-            this.cantidad = cantidad;
-        }
-
-        public int getId() { return id; }
-        public Producto getProducto() { return producto; }
-        public int getCantidad() { return cantidad; }
-
-        @Override
-        public String toString() {
-            return "Pedido#" + id + " [" + producto.getCodigo() + " - " + producto.getNombre() + " x" + cantidad + "]";
-        }
-    }
-
     private cola<Pedido> colaExpedicion;
 
     public lineaExpedicion() {

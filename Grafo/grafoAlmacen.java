@@ -7,9 +7,9 @@ import Cola.cola;
 // Se usa BFS para encontrar la ruta minima entre dos pasillos.
 public class grafoAlmacen implements iGrafo {
 
-    private NodoVertice primero;
+    private nodoVertice primero;
 
-    public GrafoAlmacen() {
+    public grafoAlmacen() {
         this.primero = null;
     }
 
@@ -75,8 +75,8 @@ public class grafoAlmacen implements iGrafo {
     @Override
     public void insertarArista(String origen, String destino) {
         // Si alguno de los pasillos no existe, se crea automaticamente
-        insertarVertice(origen);
-        insertarVertice(destino);
+        if (!existeVertice(origen)) insertarVertice(origen);
+        if (!existeVertice(destino)) insertarVertice(destino);
 
         // Grafo no dirigido: la conexion va en ambas direcciones
         agregarAdyacente(origen, destino);
@@ -203,7 +203,7 @@ public class grafoAlmacen implements iGrafo {
     }
 
     @Override
-    public void recorridoDFS(String inicio) {
+    public void recorridosDFS(String inicio) {
         limpiarVisitados();
         nodoVertice verticeInicio = buscarVertice(inicio);
         if (verticeInicio == null) {
@@ -230,7 +230,7 @@ public class grafoAlmacen implements iGrafo {
     }
 
     @Override
-    public void recorridoBFS(String inicio) {
+    public void recorridosBFS(String inicio) {
         limpiarVisitados();
         nodoVertice verticeInicio = buscarVertice(inicio);
         if (verticeInicio == null) {
@@ -238,7 +238,7 @@ public class grafoAlmacen implements iGrafo {
             return;
         }
 
-        Cola<String> cola = new Cola<>();
+        cola<String> cola = new cola<>();
         verticeInicio.visitado = true;
         cola.encolar(inicio);
 
@@ -284,7 +284,7 @@ public class grafoAlmacen implements iGrafo {
         String[] padre = new String[n];
         int count = 0;
 
-        Cola<String> cola = new Cola<>();
+        cola<String> cola = new cola<>();
         nodoVertice verticeInicio = buscarVertice(origen);
         verticeInicio.visitado = true;
         cola.encolar(origen);
