@@ -110,11 +110,11 @@ public class Main {
     return texto;
 }
     private static void altaProducto(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad) {
-        String codigo = leerTexto(teclado, "Codigo: ");
-        String nombre = leerTexto(teclado, "Nombre: ");
-        String pasillo = leerTexto(teclado, "Pasillo: ");
-        int stock = leerEntero(teclado, "Stock inicial: ");
-        String lote = leerTexto(teclado, "Lote: ");
+        String codigo = leerTexto(teclado, "Codigo del producto (ej; P001): ");
+        String nombre = leerTexto(teclado, "Nombre del producto: ");
+        String pasillo = leerTexto(teclado, "Ubicación en el deposito(ej: Pasillo-A): ");
+        int stock = leerEntero(teclado, "Cantidad inicial en Stock: ");
+        String lote = leerTexto(teclado, "Número de lote(ej L001): ");
 
         Producto nuevo = gestor.agregarProducto(codigo, nombre, pasillo, stock, lote);
         if (nuevo == null) return;
@@ -166,11 +166,12 @@ public class Main {
     }
 
     private static void mostrarCriticos(Scanner teclado, monitorStockCritico monitor) {
-        int n = leerEntero(teclado, "Cuantos productos criticos mostrar?: ");
+        int n = leerEntero(teclado, "Cantidad de  productos criticos a mostrar: ");
 
         if (n <= 0) {
             System.out.println("Error: la cantidad debe ser mayor a cero.");
             return;
+
     }
 
     monitor.mostrarProductosCriticos(n);
@@ -236,8 +237,8 @@ public class Main {
     }
 
     private static void calcularRuta(Scanner teclado, grafoAlmacen grafo) {
-        String origen = leerTexto(teclado, "Pasillo de origen: ");
-        String destino = leerTexto(teclado, "Pasillo de destino: ");
+        String origen = leerTexto(teclado, "Pasillo de origen (ej: Pasillo-E): ");
+        String destino = leerTexto(teclado, "Pasillo de destino (ej: Pasillo-F): ");
 
         String[] ruta = grafo.rutaMasCorta(origen, destino);
         if (ruta != null) {
@@ -251,13 +252,13 @@ public class Main {
     }
 
     private static void agregarPasillo(Scanner teclado, grafoAlmacen grafo) {
-        String pasillo = leerTexto(teclado, "Nombre del pasillo nuevo: ");
+        String pasillo = leerTexto(teclado, "Nombre del nuevo pasillo(ej: Pasillo-D): ");
         grafo.insertarVertice(pasillo);
 }
 
     private static void conectarPasillos(Scanner teclado, grafoAlmacen grafo) {
-        String origen = leerTexto(teclado, "Pasillo origen: ");
-        String destino = leerTexto(teclado, "Pasillo destino: ");
+        String origen = leerTexto(teclado, "Pasillo origen (ej: Pasillo-E): ");
+        String destino = leerTexto(teclado, "Pasillo destino (ej: Pasillo-F): ");
         grafo.insertarArista(origen, destino);
 }
 
