@@ -85,26 +85,36 @@ public class Main {
 
     private static int leerEntero(Scanner teclado, String mensaje) {
         System.out.print(mensaje);
-        while (!teclado.hasNextInt()) {
-            System.out.println("Por favor ingrese un numero valido.");
-            teclado.next();
-            System.out.print(mensaje);
-        }
-        int valor = teclado.nextInt();
-        teclado.nextLine();
-        return valor;
-    }
+        String entrada = teclado.nextLine();
 
+        while (true) {
+            try {
+                return Integer.parseInt(entrada.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor ingrese un numero valido.");
+                System.out.print(mensaje);
+                entrada = teclado.nextLine();
+            }
+    }
+}
+    private static String leerTexto(Scanner teclado, String mensaje) {
+        System.out.print(mensaje);
+        String texto = teclado.nextLine().trim();
+
+        while (texto.isEmpty()) {
+            System.out.println("Este campo no puede estar vacio.");
+            System.out.print(mensaje);
+            texto = teclado.nextLine().trim();
+        }
+
+    return texto;
+}
     private static void altaProducto(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad) {
-        System.out.print("Codigo: ");
-        String codigo = teclado.nextLine();
-        System.out.print("Nombre: ");
-        String nombre = teclado.nextLine();
-        System.out.print("Pasillo: ");
-        String pasillo = teclado.nextLine();
+        String codigo = leerTexto(teclado, "Codigo: ");
+        String nombre = leerTexto(teclado, "Nombre: ");
+        String pasillo = leerTexto(teclado, "Pasillo: ");
         int stock = leerEntero(teclado, "Stock inicial: ");
-        System.out.print("Lote: ");
-        String lote = teclado.nextLine();
+        String lote = leerTexto(teclado, "Lote: ");
 
         Producto nuevo = gestor.agregarProducto(codigo, nombre, pasillo, stock, lote);
         if (nuevo == null) return;
@@ -116,8 +126,7 @@ public class Main {
     }
 
     private static void registrarIngreso(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad, monitorStockCritico monitor) {
-        System.out.print("Codigo del producto: ");
-        String codigo = teclado.nextLine();
+        String codigo = leerTexto(teclado, "Codigo del producto: ");
         int cantidad = leerEntero(teclado, "Cantidad a ingresar: ");
 
         if (cantidad <= 0) {
@@ -137,8 +146,7 @@ public class Main {
     }
 
     private static void registrarEgreso(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad, monitorStockCritico monitor) {
-        System.out.print("Codigo del producto: ");
-        String codigo = teclado.nextLine();
+        String codigo = leerTexto(teclado, "Codigo del producto: ");
         int cantidad = leerEntero(teclado, "Cantidad a retirar: ");
 
         if (cantidad <= 0) {
@@ -159,19 +167,23 @@ public class Main {
 
     private static void mostrarCriticos(Scanner teclado, monitorStockCritico monitor) {
         int n = leerEntero(teclado, "Cuantos productos criticos mostrar?: ");
-        monitor.mostrarProductosCriticos(n);
+
+        if (n <= 0) {
+            System.out.println("Error: la cantidad debe ser mayor a cero.");
+            return;
     }
 
+    monitor.mostrarProductosCriticos(n);
+}
+
     private static void buscarProducto(Scanner teclado, gestorInventario gestor) {
-        System.out.print("Codigo del producto: ");
-        String codigo = teclado.nextLine();
+        String codigo = leerTexto(teclado, "Codigo del producto: ");
         Producto producto = gestor.buscarProducto(codigo);
         if (producto != null) System.out.println(producto);
     }
 
     private static void eliminarProducto(Scanner teclado, gestorInventario gestor) {
-        System.out.print("Codigo del producto a eliminar: ");
-        String codigo = teclado.nextLine();
+        String codigo = leerTexto(teclado, "Codigo del producto a eliminar: ");
 
         if (!gestor.existeProducto(codigo)) {
             System.out.println("Error: no existe ningun producto con el codigo [" + codigo + "].");
@@ -187,8 +199,7 @@ public class Main {
     }
 
     private static void procesarPedido(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad, monitorStockCritico monitor, grafoAlmacen grafo, lineaExpedicion expedicion) {
-        System.out.print("Codigo del producto: ");
-        String codigo = teclado.nextLine();
+        String codigo = leerTexto(teclado, "Codigo del producto: ");
 
         Producto producto = gestor.buscarProducto(codigo);
         if (producto == null) return;
@@ -225,10 +236,8 @@ public class Main {
     }
 
     private static void calcularRuta(Scanner teclado, grafoAlmacen grafo) {
-        System.out.print("Pasillo de origen: ");
-        String origen = teclado.nextLine();
-        System.out.print("Pasillo de destino: ");
-        String destino = teclado.nextLine();
+        String origen = leerTexto(teclado, "Pasillo de origen: ");
+        String destino = leerTexto(teclado, "Pasillo de destino: ");
 
         String[] ruta = grafo.rutaMasCorta(origen, destino);
         if (ruta != null) {
@@ -242,16 +251,13 @@ public class Main {
     }
 
     private static void agregarPasillo(Scanner teclado, grafoAlmacen grafo) {
-        System.out.print("Nombre del pasillo nuevo: ");
-        String pasillo = teclado.nextLine();
+        String pasillo = leerTexto(teclado, "Nombre del pasillo nuevo: ");
         grafo.insertarVertice(pasillo);
 }
 
     private static void conectarPasillos(Scanner teclado, grafoAlmacen grafo) {
-        System.out.print("Pasillo origen: ");
-        String origen = teclado.nextLine();
-        System.out.print("Pasillo destino: ");
-        String destino = teclado.nextLine();
+        String origen = leerTexto(teclado, "Pasillo origen: ");
+        String destino = leerTexto(teclado, "Pasillo destino: ");
         grafo.insertarArista(origen, destino);
 }
 
