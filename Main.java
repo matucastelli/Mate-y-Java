@@ -96,6 +96,7 @@ public class Main {
     }
 
     private static void altaProducto(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad) {
+<<<<<<< Updated upstream
         System.out.print("Codigo: ");
         String codigo = teclado.nextLine();
         System.out.print("Nombre: ");
@@ -105,6 +106,13 @@ public class Main {
         int stock = leerEntero(teclado, "Stock inicial: ");
         System.out.print("Lote: ");
         String lote = teclado.nextLine();
+=======
+        String codigo = leerTexto(teclado, "Codigo del producto (ej; P001): ");
+        String nombre = leerTexto(teclado, "Nombre del producto: ");
+        String pasillo = leerTexto(teclado, "Ubicación en el deposito(ej: Pasillo-A): ");
+        int stock = leerEntero(teclado, "Cantidad inicial en Stock: ");
+        String lote = leerTexto(teclado, "Número de lote(ej L001): ");
+>>>>>>> Stashed changes
 
         Producto nuevo = gestor.agregarProducto(codigo, nombre, pasillo, stock, lote);
         if (nuevo == null) return;
@@ -158,8 +166,16 @@ public class Main {
     }
 
     private static void mostrarCriticos(Scanner teclado, monitorStockCritico monitor) {
+<<<<<<< Updated upstream
         int n = leerEntero(teclado, "Cuantos productos criticos mostrar?: ");
         monitor.mostrarProductosCriticos(n);
+=======
+        int n = leerEntero(teclado, "Cantidad de  productos criticos a mostrar: ");
+
+        if (n <= 0) {
+            System.out.println("Error: la cantidad debe ser mayor a cero.");
+            return;
+>>>>>>> Stashed changes
     }
 
     private static void buscarProducto(Scanner teclado, gestorInventario gestor) {
@@ -225,10 +241,15 @@ public class Main {
     }
 
     private static void calcularRuta(Scanner teclado, grafoAlmacen grafo) {
+<<<<<<< Updated upstream
         System.out.print("Pasillo de origen: ");
         String origen = teclado.nextLine();
         System.out.print("Pasillo de destino: ");
         String destino = teclado.nextLine();
+=======
+        String origen = leerTexto(teclado, "Pasillo de origen (ej: Pasillo-E): ");
+        String destino = leerTexto(teclado, "Pasillo de destino (ej: Pasillo-F): ");
+>>>>>>> Stashed changes
 
         String[] ruta = grafo.rutaMasCorta(origen, destino);
         if (ruta != null) {
@@ -242,16 +263,25 @@ public class Main {
     }
 
     private static void agregarPasillo(Scanner teclado, grafoAlmacen grafo) {
+<<<<<<< Updated upstream
         System.out.print("Nombre del pasillo nuevo: ");
         String pasillo = teclado.nextLine();
+=======
+        String pasillo = leerTexto(teclado, "Nombre del nuevo pasillo(ej: Pasillo-D): ");
+>>>>>>> Stashed changes
         grafo.insertarVertice(pasillo);
 }
 
     private static void conectarPasillos(Scanner teclado, grafoAlmacen grafo) {
+<<<<<<< Updated upstream
         System.out.print("Pasillo origen: ");
         String origen = teclado.nextLine();
         System.out.print("Pasillo destino: ");
         String destino = teclado.nextLine();
+=======
+        String origen = leerTexto(teclado, "Pasillo origen (ej: Pasillo-E): ");
+        String destino = leerTexto(teclado, "Pasillo destino (ej: Pasillo-F): ");
+>>>>>>> Stashed changes
         grafo.insertarArista(origen, destino);
 }
 
