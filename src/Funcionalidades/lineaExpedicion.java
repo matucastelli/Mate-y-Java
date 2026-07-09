@@ -3,12 +3,15 @@ package Funcionalidades;
 import Clases.Producto;
 import Cola.cola;
 import Clases.Pedido;
+import Pila.pila;
 
 // Funcionalidad: Linea de Expedicion.
 // Los pedidos listos para despacho esperan en una cola FIFO.
 // El operario los carga al camion en el orden en que llegaron.
+// Posibilidad de poder eliminar pedidos y devolver su stock
 public class lineaExpedicion {
     private cola<Pedido> colaExpedicion;
+
 
     public lineaExpedicion() {
         this.colaExpedicion = new cola<>();
@@ -37,8 +40,66 @@ public class lineaExpedicion {
             return null;
         }
         Pedido despachado = colaExpedicion.desencolar();
+        //historialDespachos.apilar(despachado);
         System.out.println("Despachado al camion: " + despachado);
         return despachado;
+    }
+
+
+  /*  public boolean deshacerUltimoDespacho() {
+        if (historialDespachos.estaVacia()) {
+            System.out.println("No hay despachos para deshacer.");
+            return false;
+        }
+
+        Pedido ultimoDespachado = historialDespachos.desapilar();
+        cola<Pedido> auxiliar = new cola<>();
+        auxiliar.encolar(ultimoDespachado);
+        while (!colaExpedicion.estaVacia()) {
+            auxiliar.encolar(colaExpedicion.desencolar());
+        }
+        colaExpedicion = auxiliar;
+        System.out.println("Se deshizo el despacho de: " + ultimoDespachado);
+        return true;
+    } */
+
+    public Producto eliminarPedido(int id , gestorInventario gestor){
+
+        cola<Pedido> colaAuxiliar = new cola<>();
+        Producto productoCancelado = null;
+
+        if (colaExpedicion.estaVacia()) {
+            System.out.println("No hay pedidos para eliminar");
+            return null;
+
+        }
+
+        while (!colaExpedicion.estaVacia()) {
+            Pedido pedidoActual = colaExpedicion.desencolar();
+
+            if (pedidoActual.getId() == id) {
+                productoCancelado = pedidoActual.getProducto();
+
+                String codigoProd = productoCancelado.getCodigo();
+                int cantidadADevolver = pedidoActual.getCantidad();
+
+                gestor.actualizarStock(codigoProd, cantidadADevolver);
+
+                System.out.println("Pedido #" + id + " cancelado. Se devolvieron " + cantidadADevolver + " unidades del producto " + codigoProd);
+            } else {
+                colaAuxiliar.encolar(pedidoActual);
+            }
+        }
+
+        while (!colaAuxiliar.estaVacia()){
+            colaExpedicion.encolar(colaAuxiliar.desencolar());
+        }
+
+        if (productoCancelado == null){
+            System.out.println("No se encontró ningún pedido con el ID #" + id);
+        }
+        return productoCancelado;
+
     }
 
     // Muestra el pedido que esta primero sin despacharlo.

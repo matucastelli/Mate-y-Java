@@ -10,7 +10,7 @@ import Grafo.grafoAlmacen;
 
 public class Main {
 
-    private static int CANTIDAD_CRITICOS = 5;
+    private static final int CANTIDAD_CRITICOS = 5;
     private static final String PASILLO_ENTRADA = "Pasillo-A";
 
     public static void main(String[] args) {
@@ -44,10 +44,11 @@ public class Main {
                 case 11: procesarPedido(teclado, gestor, trazabilidad, monitor, grafo, expedicion); break;
                 case 12: expedicion.despacharProximo(); break;
                 case 13: expedicion.mostrarPedidosEnEspera(); break;
-                case 14: grafo.mostrarGrafo(); break;
-                case 15: calcularRuta(teclado, grafo); break;
-                case 16: agregarPasillo(teclado, grafo); break;
-                case 17: conectarPasillos(teclado, grafo); break;
+                case 14: pedidoEliminar(teclado, expedicion, gestor, grafo); break;
+                case 15: grafo.mostrarGrafo(); break;
+                case 16: calcularRuta(teclado, grafo); break;
+                case 17: agregarPasillo(teclado, grafo); break;
+                case 18: conectarPasillos(teclado, grafo); break;
                 case 0:  System.out.println("Saliendo del sistema..."); break;
                 default: System.out.println("Opcion invalida.");
             }
@@ -75,11 +76,13 @@ public class Main {
         System.out.println("11. Procesar pedido (localizar, verificar, ruta, despachar)");
         System.out.println("12. Despachar proximo pedido de la cola");
         System.out.println("13. Ver pedidos en espera");
+        System.out.println("14. Eliminar un pedido");
         System.out.println("--- Rutas del almacen ---");
-        System.out.println("14. Ver mapa de pasillos");
-        System.out.println("15. Calcular ruta minima entre pasillos");
-        System.out.println("16. Agregar pasillo nuevo");
-        System.out.println("17. Conectar dos pasillos");
+        System.out.println("15. Ver mapa de pasillos");
+        System.out.println("16. Calcular ruta minima entre pasillos");
+        System.out.println("17. Agregar pasillo nuevo");
+        System.out.println("18. Conectar dos pasillos");
+
         System.out.println("0.  Salir");
     }
 
@@ -199,6 +202,44 @@ public class Main {
         }
     }
 
+    private static void pedidoEliminar(Scanner teclado, lineaExpedicion expedicion, gestorInventario gestor, grafoAlmacen grafo) {
+        int id = leerEntero(teclado, "Ingrese el numero de id de pedido (Ej: 1): ");
+
+        if (id < 1 ) {
+            System.out.println("id invalido");
+            return;
+        }
+
+        System.out.print("Esta seguro que quiere eliminar el pedido con id #" + id +" (S/n): ");
+        String confirmacion = teclado.nextLine();
+        if (confirmacion.equalsIgnoreCase("S")) {
+            Producto prodDevuelto = expedicion.eliminarPedido(id, gestor);
+            if (prodDevuelto != null){
+                String ubicacionDestino = prodDevuelto.getUbicacion();
+                String [] rutaDevolucion = grafo.rutaMasCorta(PASILLO_ENTRADA, ubicacionDestino);
+
+                if (rutaDevolucion != null){
+                    System.out.println("\n--- TAREA DE LOGÍSTICA INVERSA ---");
+                    System.out.print("Ruta del operario para devolver la mercadería al " + ubicacionDestino + ": ");
+                    for (int i = 0; i < rutaDevolucion.length; i++) {
+                        System.out.print(rutaDevolucion[i]);
+                        if (i < rutaDevolucion.length - 1) System.out.print(" -> ");
+                    }
+                    System.out.println("\n----------------------------------");
+
+                }
+                System.out.println("Pedido con id #" + id + " " + "eliminado correctamente");
+            } else {
+                System.out.println("No pudimos encontrar el pedido con el id #" + id );
+            }
+
+        } else {
+            System.out.println("Operacion cancelada.");
+        }
+
+
+    }
+
     private static void procesarPedido(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad, monitorStockCritico monitor, grafoAlmacen grafo, lineaExpedicion expedicion) {
         String codigo = leerTexto(teclado, "Codigo del producto: ");
 
@@ -231,7 +272,7 @@ public class Main {
         boolean exito = gestor.actualizarStock(codigo, -cantidad);
         if (!exito) return;
 
-        trazabilidad.registrarMovimiento(registroTrazabilidad.EGRESO, codigo, cantidad, "operador");
+        //trazabilidad.registrarMovimiento(registroTrazabilidad.EGRESO, codigo, cantidad, "operador");
 
         expedicion.agregarPedido(producto, cantidad);
     }
