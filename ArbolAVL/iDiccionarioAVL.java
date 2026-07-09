@@ -1,5 +1,6 @@
 package ArbolAVL;
 import Clases.Producto;
+import Cola.cola;
 
 public interface iDiccionarioAVL {
     // Inserta un producto en el árbol usando su código como clave.
@@ -26,4 +27,9 @@ public interface iDiccionarioAVL {
     // Devuelve todos los productos del árbol ordenados por código (recorrido in-order).
     // Se usa para construir la Cola de Prioridad del Monitor de Stock Critico.
     Producto[] obtenerTodos();
+
+    // Devuelve una cola con los productos cuya ubicación contenga el pasillo indicado.
+    cola<Producto> buscarPorUbicacion(String pasillo);
 }
+
+

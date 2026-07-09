@@ -2,6 +2,8 @@ package Funcionalidades;
 
 import ArbolAVL.diccionarioAVL;
 import Clases.Producto;
+import Cola.cola;
+import Grafo.grafoAlmacen;
 
 public class gestorInventario {
 
@@ -85,5 +87,45 @@ public class gestorInventario {
     // Comprueba el estado de la raiz del AVL 
     public boolean inventarioVacio() {
         return inventario.estaVacio();
+    }
+
+    // --- INTEGRACIÓN: Mapa de Stock por Pasillo y Ruta BFS ---
+    public void mapaDeStockPorPasillo(String pasilloDestino, grafoAlmacen mapa) {
+        
+        // 1. Validar si el pasillo existe en el mapa físico
+        if (!mapa.existeVertice(pasilloDestino)) {
+            System.out.println("Error: El pasillo [" + pasilloDestino + "] no existe en el mapa del depósito.");
+            return;
+        }
+
+        // 2. Calcular e imprimir la ruta desde la Entrada
+        System.out.println("=== RUTA DE PICKING ÓPTIMA ===");
+        // Si no existe el nodo "Entrada", lo creamos temporalmente para evitar que el sistema caiga
+        if (!mapa.existeVertice("Entrada")) {
+            System.out.println("Aviso: Nodo 'Entrada' no configurado. Mostrando solo inventario...");
+        } else {
+            String[] ruta = mapa.rutaMasCorta("Entrada", pasilloDestino);
+            if (ruta != null) {
+                System.out.print("Recorrido a seguir: ");
+                for (int i = 0; i < ruta.length; i++) {
+                    System.out.print("[" + ruta[i] + "]");
+                    if (i < ruta.length - 1) System.out.print(" -> ");
+                }
+                System.out.println("\n");
+            }
+        }
+
+        // 3. Buscar los productos dentro del AVL usando la Cola
+        cola<Producto> inventarioLocal = inventario.buscarPorUbicacion(pasilloDestino);
+
+        System.out.println("=== INVENTARIO EN " + pasilloDestino.toUpperCase() + " ===");
+        if (inventarioLocal.estaVacia()) {
+            System.out.println("El pasillo se encuentra actualmente sin productos asignados.");
+        } else {
+            while (!inventarioLocal.estaVacia()) {
+                Producto prod = inventarioLocal.desencolar();
+                System.out.println("- Cód: " + prod.getCodigo() + " | " + prod.getNombre() + " | Stock disponible: " + prod.getStock());
+            }
+        }
     }
 }
