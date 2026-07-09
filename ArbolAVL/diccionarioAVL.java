@@ -1,5 +1,6 @@
 package ArbolAVL;
 import Clases.Producto;
+import Cola.cola;
 
 public class diccionarioAVL implements iDiccionarioAVL {
     private nodoAVL raiz;
@@ -224,6 +225,30 @@ public class diccionarioAVL implements iDiccionarioAVL {
             array[indiceTemp] = nodo.getValor();
             indiceTemp++;
             llenarArrayInOrder(nodo.getDerecho(), array);
+        }
+    }
+    // Búsqueda por Ubicación (Pasillo) 
+
+    @Override
+    public cola<Producto> buscarPorUbicacion(String pasillo) {
+        cola<Producto> resultados = new cola<>();
+        // Pasamos a minúsculas para evitar problemas de tipeo
+        String pasilloBusqueda = pasillo.toLowerCase(); 
+        buscarPorUbicacionRecursivo(this.raiz, pasilloBusqueda, resultados);
+        return resultados;
+    }
+
+    private void buscarPorUbicacionRecursivo(nodoAVL nodo, String pasilloBusqueda, cola<Producto> resultados) {
+        if (nodo != null) {
+            buscarPorUbicacionRecursivo(nodo.getIzquierdo(), pasilloBusqueda, resultados);
+            
+            // Condición: si la ubicación del producto incluye el nombre del pasillo
+            String ubicacionProducto = nodo.getValor().getUbicacion().toLowerCase();
+            if (ubicacionProducto.contains(pasilloBusqueda)) {
+                resultados.encolar(nodo.getValor());
+            }
+            
+            buscarPorUbicacionRecursivo(nodo.getDerecho(), pasilloBusqueda, resultados);
         }
     }
 }

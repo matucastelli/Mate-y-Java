@@ -10,7 +10,7 @@ import Grafo.grafoAlmacen;
 
 public class Main {
 
-    private static int CANTIDAD_CRITICOS = 5;
+    private static final int CANTIDAD_CRITICOS = 5;
     private static final String PASILLO_ENTRADA = "Pasillo-A";
 
     public static void main(String[] args) {
@@ -48,6 +48,8 @@ public class Main {
                 case 15: calcularRuta(teclado, grafo); break;
                 case 16: agregarPasillo(teclado, grafo); break;
                 case 17: conectarPasillos(teclado, grafo); break;
+                // --- MEJORA FUNCIONAL ---
+                case 18: mapaDeStockPorPasillo(teclado, gestor, grafo); break;
                 case 0:  System.out.println("Saliendo del sistema..."); break;
                 default: System.out.println("Opcion invalida.");
             }
@@ -80,6 +82,8 @@ public class Main {
         System.out.println("15. Calcular ruta minima entre pasillos");
         System.out.println("16. Agregar pasillo nuevo");
         System.out.println("17. Conectar dos pasillos");
+        System.out.println("--- Mejora Funcional ---");
+        System.out.println("18. Mapa de stock por pasillo y ruta optima");
         System.out.println("0.  Salir");
     }
 
@@ -95,8 +99,9 @@ public class Main {
                 System.out.print(mensaje);
                 entrada = teclado.nextLine();
             }
+        }
     }
-}
+
     private static String leerTexto(Scanner teclado, String mensaje) {
         System.out.print(mensaje);
         String texto = teclado.nextLine().trim();
@@ -107,14 +112,15 @@ public class Main {
             texto = teclado.nextLine().trim();
         }
 
-    return texto;
-}
+        return texto;
+    }
+
     private static void altaProducto(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad) {
-        String codigo = leerTexto(teclado, "Codigo: ");
-        String nombre = leerTexto(teclado, "Nombre: ");
-        String pasillo = leerTexto(teclado, "Pasillo: ");
-        int stock = leerEntero(teclado, "Stock inicial: ");
-        String lote = leerTexto(teclado, "Lote: ");
+        String codigo = leerTexto(teclado, "Codigo del producto (ej; P001): ");
+        String nombre = leerTexto(teclado, "Nombre del producto: ");
+        String pasillo = leerTexto(teclado, "Ubicación en el deposito(ej: Pasillo-A): ");
+        int stock = leerEntero(teclado, "Cantidad inicial en Stock: ");
+        String lote = leerTexto(teclado, "Número de lote(ej L001): ");
 
         Producto nuevo = gestor.agregarProducto(codigo, nombre, pasillo, stock, lote);
         if (nuevo == null) return;
@@ -166,15 +172,15 @@ public class Main {
     }
 
     private static void mostrarCriticos(Scanner teclado, monitorStockCritico monitor) {
-        int n = leerEntero(teclado, "Cuantos productos criticos mostrar?: ");
+        int n = leerEntero(teclado, "Cantidad de  productos criticos a mostrar: ");
 
         if (n <= 0) {
             System.out.println("Error: la cantidad debe ser mayor a cero.");
             return;
-    }
+        }
 
-    monitor.mostrarProductosCriticos(n);
-}
+        monitor.mostrarProductosCriticos(n);
+    }
 
     private static void buscarProducto(Scanner teclado, gestorInventario gestor) {
         String codigo = leerTexto(teclado, "Codigo del producto: ");
@@ -236,8 +242,8 @@ public class Main {
     }
 
     private static void calcularRuta(Scanner teclado, grafoAlmacen grafo) {
-        String origen = leerTexto(teclado, "Pasillo de origen: ");
-        String destino = leerTexto(teclado, "Pasillo de destino: ");
+        String origen = leerTexto(teclado, "Pasillo de origen (ej: Pasillo-E): ");
+        String destino = leerTexto(teclado, "Pasillo de destino (ej: Pasillo-F): ");
 
         String[] ruta = grafo.rutaMasCorta(origen, destino);
         if (ruta != null) {
@@ -251,15 +257,20 @@ public class Main {
     }
 
     private static void agregarPasillo(Scanner teclado, grafoAlmacen grafo) {
-        String pasillo = leerTexto(teclado, "Nombre del pasillo nuevo: ");
+        String pasillo = leerTexto(teclado, "Nombre del nuevo pasillo(ej: Pasillo-D): ");
         grafo.insertarVertice(pasillo);
-}
+    }
 
     private static void conectarPasillos(Scanner teclado, grafoAlmacen grafo) {
-        String origen = leerTexto(teclado, "Pasillo origen: ");
-        String destino = leerTexto(teclado, "Pasillo destino: ");
+        String origen = leerTexto(teclado, "Pasillo origen (ej: Pasillo-E): ");
+        String destino = leerTexto(teclado, "Pasillo destino (ej: Pasillo-F): ");
         grafo.insertarArista(origen, destino);
-}
+    }
+
+    private static void mapaDeStockPorPasillo(Scanner teclado, gestorInventario gestor, grafoAlmacen grafo) {
+        String pasillo = leerTexto(teclado, "Ingrese el pasillo a auditar (Ej: Pasillo-C): ");
+        gestor.mapaDeStockPorPasillo(pasillo, grafo);
+    }
 
     private static void cargarDatosDePrueba(gestorInventario gestor, registroTrazabilidad trazabilidad, grafoAlmacen grafo) {
         gestor.agregarProducto("P001", "Tornillos 5mm",        "Pasillo-A", 50,  "L001");
