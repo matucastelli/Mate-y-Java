@@ -177,8 +177,6 @@ public class Main {
         if (n <= 0) {
             System.out.println("Error: la cantidad debe ser mayor a cero.");
             return;
-        }
-
         monitor.mostrarProductosCriticos(n);
     }
 
