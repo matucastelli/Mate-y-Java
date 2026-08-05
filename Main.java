@@ -50,6 +50,7 @@ public class Main {
                 case 17: conectarPasillos(teclado, grafo); break;
                 // --- MEJORA FUNCIONAL ---
                 case 18: mapaDeStockPorPasillo(teclado, gestor, grafo); break;
+                case 19: buscarPorNombreParcial(teclado, gestor); break;
                 case 0:  System.out.println("Saliendo del sistema..."); break;
                 default: System.out.println("Opcion invalida.");
             }
@@ -84,22 +85,8 @@ public class Main {
         System.out.println("17. Conectar dos pasillos");
         System.out.println("--- Mejora Funcional ---");
         System.out.println("18. Mapa de stock por pasillo y ruta optima");
+        System.out.println("19. Buscar productos por nombre");
         System.out.println("0.  Salir");
-    }
-
-    private static int leerEntero(Scanner teclado, String mensaje) {
-        System.out.print(mensaje);
-        String entrada = teclado.nextLine();
-
-        while (true) {
-            try {
-                return Integer.parseInt(entrada.trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Por favor ingrese un numero valido.");
-                System.out.print(mensaje);
-                entrada = teclado.nextLine();
-            }
-        }
     }
 
     private static String leerTexto(Scanner teclado, String mensaje) {
@@ -113,6 +100,40 @@ public class Main {
         }
 
         return texto;
+    }
+
+    private static int leerEntero(Scanner teclado, String mensaje) {
+        System.out.print(mensaje);
+        String entrada = teclado.nextLine().trim();
+        while (!esNumeroValido(entrada)) {
+            System.out.println("Error: Por favor ingrese un numero valido (solo digitos).");
+            System.out.print(mensaje);
+            entrada = teclado.nextLine().trim();
+        }
+        return Integer.parseInt(entrada);
+    }
+
+    private static boolean esNumeroValido(String cadena) {
+        // 1. Validar que no esté vacío
+        if (cadena == null || cadena.isEmpty()) {
+            return false;
+        }
+
+        int inicio = 0;
+        if (cadena.charAt(0) == '-') {
+            if (cadena.length() == 1) {
+                return false;
+            }
+            inicio = 1;
+        }
+
+        for (int i = inicio; i < cadena.length(); i++) {
+            char c = cadena.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static void altaProducto(Scanner teclado, gestorInventario gestor, registroTrazabilidad trazabilidad) {
@@ -267,9 +288,15 @@ public class Main {
         grafo.insertarArista(origen, destino);
     }
 
+    private static void buscarPorNombreParcial(Scanner teclado, gestorInventario gestor) {
+        System.out.print("Ingrese el nombre o palabra clave a buscar: ");
+        String palabra = teclado.nextLine();
+        gestor.mostrarProductosPorNombre(palabra);
+    }
+
     private static void mapaDeStockPorPasillo(Scanner teclado, gestorInventario gestor, grafoAlmacen grafo) {
         String pasillo = leerTexto(teclado, "Ingrese el pasillo a auditar (Ej: Pasillo-C): ");
-        gestor.mapaDeStockPorPasillo(pasillo, grafo);
+        gestor.mapaDeStockPorPasillo(PASILLO_ENTRADA, pasillo, grafo); 
     }
 
     private static void cargarDatosDePrueba(gestorInventario gestor, registroTrazabilidad trazabilidad, grafoAlmacen grafo) {

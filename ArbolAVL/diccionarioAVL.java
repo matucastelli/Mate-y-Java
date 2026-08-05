@@ -210,7 +210,6 @@ public class diccionarioAVL implements iDiccionarioAVL {
     }
 
     // Recorre el arbol in-order y devuelve todos los productos en un array.
-    // Al ser Producto[] (tipo concreto, no generico), no hay problema de cast.
     @Override
     public Producto[] obtenerTodos() {
         Producto[] resultado = new Producto[cantidadElementos];
@@ -227,14 +226,63 @@ public class diccionarioAVL implements iDiccionarioAVL {
             llenarArrayInOrder(nodo.getDerecho(), array);
         }
     }
-    // Búsqueda por Ubicación (Pasillo) 
 
+    private boolean contieneString(String textoOriginal, String palabraBuscada) {
+        if (textoOriginal == null || palabraBuscada == null) return false;
+        if (palabraBuscada.isEmpty()) return true;
+        
+        if (palabraBuscada.length() > textoOriginal.length()) return false;
+
+        // Pasa a minusculas para que no importe si escriben con mayusculas
+        String texto = textoOriginal.toLowerCase();
+        String busqueda = palabraBuscada.toLowerCase();
+
+        // Recorre el texto 
+        for (int i = 0; i <= texto.length() - busqueda.length(); i++) {
+            boolean coincidencia = true;
+            
+            // Verifica si los caracteres coinciden uno por uno
+            for (int j = 0; j < busqueda.length(); j++) {
+                if (texto.charAt(i + j) != busqueda.charAt(j)) {
+                    coincidencia = false;
+                    break; 
+                }
+            }
+        
+            if (coincidencia) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    // Busqueda por Nombre Parcial
+    @Override
+    public cola<Producto> buscarPorNombreParcial(String palabraClave) {
+        cola<Producto> resultados = new cola<>();
+        buscarPorNombreRecursivo(this.raiz, palabraClave, resultados);
+        return resultados;
+    }
+
+    private void buscarPorNombreRecursivo(nodoAVL nodo, String claveBusqueda, cola<Producto> resultados) {
+        if (nodo != null) {
+            buscarPorNombreRecursivo(nodo.getIzquierdo(), claveBusqueda, resultados);
+            
+            String nombreProducto = nodo.getValor().getNombre();
+            if (contieneString(nombreProducto, claveBusqueda)) {
+                resultados.encolar(nodo.getValor());
+            }
+            
+            buscarPorNombreRecursivo(nodo.getDerecho(), claveBusqueda, resultados);
+        }
+    }
+
+    // Busqueda por Ubicacion (Pasillo) 
     @Override
     public cola<Producto> buscarPorUbicacion(String pasillo) {
         cola<Producto> resultados = new cola<>();
-        // Pasamos a minúsculas para evitar problemas de tipeo
-        String pasilloBusqueda = pasillo.toLowerCase(); 
-        buscarPorUbicacionRecursivo(this.raiz, pasilloBusqueda, resultados);
+        buscarPorUbicacionRecursivo(this.raiz, pasillo, resultados);
         return resultados;
     }
 
@@ -242,9 +290,8 @@ public class diccionarioAVL implements iDiccionarioAVL {
         if (nodo != null) {
             buscarPorUbicacionRecursivo(nodo.getIzquierdo(), pasilloBusqueda, resultados);
             
-            // Condición: si la ubicación del producto incluye el nombre del pasillo
-            String ubicacionProducto = nodo.getValor().getUbicacion().toLowerCase();
-            if (ubicacionProducto.contains(pasilloBusqueda)) {
+            String ubicacionProducto = nodo.getValor().getUbicacion();
+            if (contieneString(ubicacionProducto, pasilloBusqueda)) {
                 resultados.encolar(nodo.getValor());
             }
             
