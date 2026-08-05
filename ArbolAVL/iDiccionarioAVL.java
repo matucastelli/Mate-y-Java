@@ -30,6 +30,9 @@ public interface iDiccionarioAVL {
 
     // Devuelve una cola con los productos cuya ubicación contenga el pasillo indicado.
     cola<Producto> buscarPorUbicacion(String pasillo);
+
+    // Devuelve una cola con los productos cuyo nombre contenga la palabra clave.
+    cola<Producto> buscarPorNombreParcial(String palabraClave);
 }
 
 

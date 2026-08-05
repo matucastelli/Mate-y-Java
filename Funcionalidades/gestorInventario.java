@@ -89,8 +89,22 @@ public class gestorInventario {
         return inventario.estaVacio();
     }
 
-    // --- INTEGRACIÓN: Mapa de Stock por Pasillo y Ruta BFS ---
-    public void mapaDeStockPorPasillo(String pasilloDestino, grafoAlmacen mapa) {
+    // Delega la búsqueda filtrada por coincidencia de nombre al AVL
+    public void mostrarProductosPorNombre(String palabraClave) {
+        cola<Producto> encontrados = inventario.buscarPorNombreParcial(palabraClave);
+
+        if (encontrados.estaVacia()) {
+            System.out.println("No se encontraron productos que coincidan con: '" + palabraClave + "'.");
+        } else {
+            System.out.println("=== RESULTADOS DE BÚSQUEDA PARA: '" + palabraClave + "' ===");
+            while (!encontrados.estaVacia()) {
+                System.out.println(encontrados.desencolar().toString());
+            }
+        }
+    }
+
+    // Mapa de Stock por Pasillo y Ruta BFS 
+    public void mapaDeStockPorPasillo(String pasilloOrigen, String pasilloDestino, grafoAlmacen mapa) {
         
         // 1. Validar si el pasillo existe en el mapa físico
         if (!mapa.existeVertice(pasilloDestino)) {
@@ -98,13 +112,12 @@ public class gestorInventario {
             return;
         }
 
-        // 2. Calcular e imprimir la ruta desde la Entrada
+        // 2. Calcular e imprimir la ruta desde el Origen
         System.out.println("=== RUTA DE PICKING ÓPTIMA ===");
-        // Si no existe el nodo "Entrada", lo creamos temporalmente para evitar que el sistema caiga
-        if (!mapa.existeVertice("Entrada")) {
-            System.out.println("Aviso: Nodo 'Entrada' no configurado. Mostrando solo inventario...");
+        if (!mapa.existeVertice(pasilloOrigen)) {
+            System.out.println("Aviso: Nodo origen '" + pasilloOrigen + "' no configurado. Mostrando solo inventario...");
         } else {
-            String[] ruta = mapa.rutaMasCorta("Entrada", pasilloDestino);
+            String[] ruta = mapa.rutaMasCorta(pasilloOrigen, pasilloDestino);
             if (ruta != null) {
                 System.out.print("Recorrido a seguir: ");
                 for (int i = 0; i < ruta.length; i++) {
@@ -129,3 +142,4 @@ public class gestorInventario {
         }
     }
 }
+
